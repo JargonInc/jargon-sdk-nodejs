@@ -1,0 +1,21 @@
+{
+	"private": true,
+	"scripts": {
+		"lerna": "./node_modules/.bin/lerna",
+		"bootstrap": "yarn run lerna bootstrap",
+		"gulp": "yarn run lerna exec ./node_modules/.bin/gulp",
+		"tsc": "yarn run gulp tsc",
+		"tslint": "yarn run gulp tslint",
+		"test": "yarn run gulp test",
+		"clean-build": "yarn run gulp clean",
+		"clean-node_modules": "yarn run lerna clean",
+		"clean-all": "yarn run clean-build && yarn run clean-node_modules"
+	},
+	"devDependencies": {
+		"lerna": "^3.4.0"
+  },
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/ts-node"]
+  }
+}

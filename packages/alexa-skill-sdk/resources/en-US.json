@@ -1,0 +1,14 @@
+{
+  "hello":"world",
+  "needsEscaping":"foo & bar",
+  "nested":{
+    "key":"nested value"
+  },
+  "number":"{num, plural, =0 {zero} =1 {one} other {#}}",
+  "numberAndSub":"{num, plural, =0 {zero {word}} =1 {one {word}} other {# {word}}}",
+  "substitution":"Hello {name}",
+  "variation":{
+    "v1":"v1",
+    "v2":"v2"
+  }
+}

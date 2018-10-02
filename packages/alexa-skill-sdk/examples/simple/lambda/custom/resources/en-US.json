@@ -1,0 +1,7 @@
+{
+  "HELLO":{
+    "v1":"Hello {name}",
+    "v2":"Hi there {name}!"
+  },
+  "WELCOME":"Hello, welcome to a sample skill that uses the Jargon SDK"
+}
