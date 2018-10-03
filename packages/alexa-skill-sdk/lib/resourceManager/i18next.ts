@@ -30,9 +30,24 @@ export class I18NextResourceManager implements ResourceManager {
       return Promise.resolve(s)
     } else if (typeof s === 'object') {
       let key = this.selectKey(Object.keys(s), item.options)
-      return Promise.resolve(s[key])
+      let v = s[key]
+      if (typeof v !== 'string') {
+        return Promise.reject(new Error(`Unexpected type ${typeof v} for item key ${item.key}.${key}`))
+      }
+      return Promise.resolve(v)
     }
-    return Promise.reject(`Unexpected type ${typeof s} returned from translator`)
+
+    return Promise.reject(new Error(`Unexpected type ${typeof s} for item key ${item.key}`))
+  }
+
+  public renderObject<T> (item: RenderItem): Promise<T> {
+    let obj = this._translator.t(item.key, item.params)
+    let t = typeof obj
+    if (t === 'object' || t === 'string' || t === 'boolean' || t === 'number') {
+      return Promise.resolve(obj)
+    }
+
+    return Promise.reject(new Error(`Unexpected type ${t} for item key ${item.key}`))
   }
 
   protected selectKey (keys: string[], opts?: RenderOptions): string {

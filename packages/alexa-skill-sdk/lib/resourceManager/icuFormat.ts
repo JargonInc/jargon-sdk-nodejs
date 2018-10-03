@@ -67,6 +67,8 @@ export class ICU {
   parse (res: any, options: any, lng: string, ns: string, key: string, info: any) {
     if (typeof res === 'object') {
       return this.parseObject(res, options, lng, ns, key, info)
+    } else if (typeof res === 'boolean' || typeof res === 'number') {
+      return res
     }
 
     const hadSuccessfulLookup = info && info.resolved && info.resolved.res

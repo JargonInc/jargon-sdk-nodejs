@@ -116,6 +116,35 @@ installing request and response interceptors, and so on.
 const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
 ```
 
+### ResourceManager
+Internally `JargonResponseBuilder` uses a `ResourceManager` to render strings and objects. You
+can directly access the resource manager if desired, for use cases such as:
+* obtaining locale-specific values that are used as parameters for later rendering operations
+* incrementally or conditionally constructing complex content
+* response directives that internally have locale-specific content (such as an upsell directive)
+
+```typescript
+export interface ResourceManager {
+  /** Renders a string in the current locale
+   * @param {RenderItem} item The item to render
+   * @returns {Promise<string>} A promise to the rendered string
+   */
+  render (item: RenderItem): Promise<string>
+
+  /** Renders an object in the current locale. This also supports returning
+   * strings, numbers, or booleans
+   * @param {RenderItem} item The item to render
+   * @returns {Promise<T>} A promise to the rendered object
+   */
+  renderObject<T> (item: RenderItem): Promise<T>
+
+  /** The locale the resource manager uses */
+  readonly locale: string
+}
+```
+
+Note that the render routines return `Promise`s to the rendered content, not the content directly.
+
 ## Adding to an existing skill
 
 ### Installation

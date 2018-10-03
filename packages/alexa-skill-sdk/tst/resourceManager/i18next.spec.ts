@@ -1,5 +1,8 @@
+/* tslint:disable:no-unused-expression*/
+
 import { I18NextResourceManagerFactory, ri, DefaultResourceManagerOptions, ResourceManager, RenderItem } from '../../lib/resourceManager'
 import { expect } from 'chai'
+import { fail } from 'assert';
 
 const rf = new I18NextResourceManagerFactory(DefaultResourceManagerOptions)
 const locale = 'en-US'
@@ -42,6 +45,47 @@ it('returns multiple variations variations based on resource manager confguratio
   await checkVariations(rm, item)
 })
 
+it('returns the rendered object', async () => {
+  let item = ri('object', { name: 'World', num: 7 })
+  let obj: any = await rm.renderObject(item)
+  expect(obj.boolVal).to.be.true
+  expect(obj.numVal).equals(32)
+  expect(obj.greeter).equals('Hello World')
+  expect(obj.child.grandchild.numString).equals('7')
+})
+
+it('rejects an attempt to load a raw boolean', async () => {
+  let item = ri('rawBoolean')
+  try {
+    let v = await rm.render(item)
+    fail('Render of a non-string should have failed')
+  } catch (error) {
+    // Expected!
+  }
+})
+
+it('returns the raw boolean', async () => {
+  let item = ri('rawBoolean')
+  let v = await rm.renderObject(item)
+  expect(v).to.be.false
+})
+
+it('rejects an attempt to load a raw number', async () => {
+  let item = ri('rawNumber')
+  try {
+    let v = await rm.render(item)
+    fail('Render of a non-string should have failed')
+  } catch (error) {
+    // Expected!
+  }
+})
+
+it('returns the raw number', async () => {
+  let item = ri('rawNumber')
+  let v = await rm.renderObject(item)
+  expect(v).equals(42)
+})
+
 async function checkVariations (rm: ResourceManager, item: RenderItem) {
   let i = 0
   let previous = await rm.render(item)
@@ -54,7 +98,6 @@ async function checkVariations (rm: ResourceManager, item: RenderItem) {
     sawVariation = sawVariation || s !== previous
   }
 
-  // tslint:disable-next-line:no-unused-expression
   expect(sawVariation).to.be.true
 }
 

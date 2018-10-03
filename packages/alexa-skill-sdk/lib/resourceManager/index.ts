@@ -50,8 +50,16 @@ export interface ResourceManagerFactory {
 export interface ResourceManager {
   /** Renders a string in the current locale
    * @param {RenderItem} item The item to render
+   * @returns {Promise<string>} A promise to the rendered string
    */
   render (item: RenderItem): Promise<string>
+
+  /** Renders an object in the current locale. This also supports returning
+   * strings, numbers, or booleans
+   * @param {RenderItem} item The item to render
+   * @returns {Promise<T>} A promise to the rendered object
+   */
+  renderObject<T> (item: RenderItem): Promise<T>
 
   /** The locale the resource manager uses */
   readonly locale: string
