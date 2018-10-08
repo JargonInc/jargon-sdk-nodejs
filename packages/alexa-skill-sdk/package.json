@@ -1,6 +1,6 @@
 {
   "name": "@jargon/alexa-skill-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The Jargon Alexa Skill SDK makes it easy to manage the content of your custom Alexa skill",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -49,5 +49,5 @@
   },
   "repository": "github:JargonInc/jargon-sdk-nodejs",
   "bugs": "https://github.com/JargonInc/jargon-sdk-nodejs/issues",
-  "homepage": "https://github.com/JargonInc/jargon-sdk-nodejs#readme"
+  "homepage": "https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/alexa-skill-sdk#readme"
 }

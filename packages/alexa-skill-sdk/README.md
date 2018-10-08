@@ -131,6 +131,12 @@ export interface ResourceManager {
    */
   render (item: RenderItem): Promise<string>
 
+  /** Renders multiple item
+   * @param {RenderItem[]} items The items to render
+   * @returns {Promise<string[]} A promise to the rendered strings
+   */
+  renderBatch (items: RenderItem[]): Promise<string[]>
+
   /** Renders an object in the current locale. This also supports returning
    * strings, numbers, or booleans
    * @param {RenderItem} item The item to render

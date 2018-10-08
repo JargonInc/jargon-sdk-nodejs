@@ -40,6 +40,15 @@ export class I18NextResourceManager implements ResourceManager {
     return Promise.reject(new Error(`Unexpected type ${typeof s} for item key ${item.key}`))
   }
 
+  public renderBatch (items: RenderItem[]): Promise<string[]> {
+    let ps: Promise<string>[] = []
+    for (const i of items) {
+      ps.push(this.render(i))
+    }
+
+    return Promise.all(ps)
+  }
+
   public renderObject<T> (item: RenderItem): Promise<T> {
     let obj = this._translator.t(item.key, item.params)
     let t = typeof obj

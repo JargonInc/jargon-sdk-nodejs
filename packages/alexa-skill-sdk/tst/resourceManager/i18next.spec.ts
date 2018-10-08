@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-expression*/
 
-import { I18NextResourceManagerFactory, ri, DefaultResourceManagerOptions, ResourceManager, RenderItem } from '../../lib/resourceManager'
+import { fail } from 'assert'
 import { expect } from 'chai'
-import { fail } from 'assert';
+import { DefaultResourceManagerOptions, I18NextResourceManagerFactory, RenderItem, ResourceManager, ri } from '../../lib/resourceManager'
 
 const rf = new I18NextResourceManagerFactory(DefaultResourceManagerOptions)
 const locale = 'en-US'
@@ -117,4 +117,16 @@ it('returns the number and the word we passed in', async () => {
 it('substitues our name', async () => {
   let s = await rm.render(ri('substitution', { name: 'Jonathan' }))
   expect(s).equals('Hello Jonathan')
+})
+
+it('works in batch', async () => {
+  let e = ri('substitution', { name: 'Everyone' })
+  let j = ri('substitution', { name: 'Jonathan' })
+  let w = ri('substitution', { name: 'World' })
+
+  let batch = await rm.renderBatch([e, j, w])
+  expect(batch).to.have.length(3)
+  expect(batch[0]).equals('Hello Everyone')
+  expect(batch[1]).equals('Hello Jonathan')
+  expect(batch[2]).equals('Hello World')
 })
