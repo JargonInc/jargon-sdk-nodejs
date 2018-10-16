@@ -82,6 +82,8 @@ content and for card or screen content) the SDK will by default consistently cho
 
 Note that you can always select a specific variation using its fully-qualified key (e.g., `resourceWithVariations.v1`)
 
+You can determine which variation the SDK chose via the ResourceManager's selectedVariation(s) routines.
+
 ## Runtime interface
 
 ### JargonResponseBuilder
@@ -122,6 +124,8 @@ can directly access the resource manager if desired, for use cases such as:
 * obtaining locale-specific values that are used as parameters for later rendering operations
 * incrementally or conditionally constructing complex content
 * response directives that internally have locale-specific content (such as an upsell directive)
+* batch rendering of multiple resources
+* determining which variation the ResourceManager chose
 
 ```typescript
 export interface ResourceManager {
@@ -143,6 +147,24 @@ export interface ResourceManager {
    * @returns {Promise<T>} A promise to the rendered object
    */
   renderObject<T> (item: RenderItem): Promise<T>
+
+  /** Retrieves information about the selected variant for a rendered item. This
+   * will only return a result when rendering the item required a variation
+   * selection. If item has been used for multiple calls to a render routine
+   * the result of the first operation will be returned; use selectedVariations
+   * to see all results.
+   * @param {RenderItem} item The item to retrieve the selected variant for
+   * @return {Promise<SelectedVariation>} A promise to the selected variation
+   */
+  selectedVariation (item: RenderItem): Promise<SelectedVariation>
+
+  /** Retrieves information about all selected variations for rendered item. This
+   * will only return a result for items that required a variation selection
+   * during rendering. Results are ordered by the ordering of the calls to render
+   * routines.
+   * @return {Promise<SelectedVariation[]>} A promise to the selected variations
+   */
+  selectedVariations (): Promise<SelectedVariation[]>
 
   /** The locale the resource manager uses */
   readonly locale: string

@@ -16,10 +16,11 @@ import * as i18n from 'i18next'
 import * as syncBackend from 'i18next-sync-fs-backend'
 import { ICU } from './icuFormat'
 
-import { DefaultResourceManagerOptions, RenderItem, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions } from '.'
+import { DefaultResourceManagerOptions, RenderItem, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions, SelectedVariation } from '.'
 
 export class I18NextResourceManager implements ResourceManager {
   protected readonly _rv = Math.random()
+  protected _selectedVariants: SelectedVariation[] = []
 
   constructor (protected _translator: i18n.i18n, readonly locale: string, protected _opts: Required<ResourceManagerOptions>) {
   }
@@ -31,8 +32,17 @@ export class I18NextResourceManager implements ResourceManager {
     } else if (typeof s === 'object') {
       let key = this.selectKey(Object.keys(s), item.options)
       let v = s[key]
+      let fk = `${item.key}.${key}`
       if (typeof v !== 'string') {
-        return Promise.reject(new Error(`Unexpected type ${typeof v} for item key ${item.key}.${key}`))
+        return Promise.reject(new Error(`Unexpected type ${typeof v} for item key ${fk}`))
+      }
+      if (this._opts.trackSelectedVariations) {
+        let sv: SelectedVariation = {
+          item: item,
+          key: fk,
+          variationKey: v
+        }
+        this._selectedVariants.push(sv)
       }
       return Promise.resolve(v)
     }
@@ -57,6 +67,19 @@ export class I18NextResourceManager implements ResourceManager {
     }
 
     return Promise.reject(new Error(`Unexpected type ${t} for item key ${item.key}`))
+  }
+
+  public selectedVariation (item: RenderItem): Promise<SelectedVariation> {
+    let v = this._selectedVariants.filter(i => i.item === item)
+    if (v.length === 0) {
+      return Promise.reject(new Error('Item was not used for any render calls that selected a variation'))
+    }
+
+    return Promise.resolve(v[0])
+  }
+
+  public selectedVariations (): Promise<SelectedVariation[]> {
+    return Promise.resolve(this._selectedVariants)
   }
 
   protected selectKey (keys: string[], opts?: RenderOptions): string {

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression*/
 
 import { fail } from 'assert'
-import { expect } from 'chai'
+import { assert, expect } from 'chai'
 import { DefaultResourceManagerOptions, I18NextResourceManagerFactory, RenderItem, ResourceManager, ri } from '../../lib/resourceManager'
 
 const rf = new I18NextResourceManagerFactory(DefaultResourceManagerOptions)
@@ -39,10 +39,56 @@ it('returns multiple variations variations based on render item override', async
 })
 
 it('returns multiple variations variations based on resource manager confguration', async () => {
-  let rf = new I18NextResourceManagerFactory({ consistentRandom: false, localesToPreload: [] })
+  let rf = new I18NextResourceManagerFactory({ consistentRandom: false })
   let rm = rf.forLocale(locale)
   let item = ri('variation', {})
   await checkVariations(rm, item)
+})
+
+it('tracks the variation that was selected', async () => {
+  let item = ri('variation')
+  let s = await rm.render(item)
+  let sv = await rm.selectedVariation(item)
+
+  expect(sv.variationKey).equals(s)
+  assert(sv.key.startsWith('variation'))
+})
+
+it('skips tracking when configured not to do so', async () => {
+  let rf = new I18NextResourceManagerFactory({ trackSelectedVariations: false })
+  let rm = rf.forLocale(locale)
+  let item = ri('variation')
+  await rm.render(item)
+  try {
+    await rm.selectedVariation(item)
+    fail('Expected rm.selectedVariation() to throw')
+  } catch (error) {
+    // Expected
+  }
+})
+
+it('errors when asked for an item without variations', async () => {
+  let item = ri('hello')
+  await rm.render(item)
+  try {
+    await rm.selectedVariation(item)
+    fail('Expected rm.selectedVariation() to throw')
+  } catch (error) {
+    // Expected
+  }
+})
+
+it('returns the selected variations in the expected order', async () => {
+  // We need to use a fresh ResourceManager for this test
+  let rm = rf.forLocale(locale)
+
+  let r1 = ri('variation')
+  let r2 = ri('anotherVariation')
+  await rm.renderBatch([r1, r2])
+  let vs = await rm.selectedVariations()
+  expect(vs).length(2)
+  expect(vs[0].item).equals(r1)
+  expect(vs[1].item).equals(r2)
 })
 
 it('returns the rendered object', async () => {

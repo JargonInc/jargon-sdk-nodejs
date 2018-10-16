@@ -12,7 +12,7 @@
  */
 
 export interface ResourceManagerOptions {
-  /** When true (default), the response builder will use the same random value
+  /** When true (default), the resource manager will use the same random value
    * when randomly selecting among variations; this ensures that calls to different routines
    * (speak, reprompt, etc.) with identical RenderItem inputs will render the same output.
    * When false, each render call will use a different random value, leading to possible
@@ -25,11 +25,17 @@ export interface ResourceManagerOptions {
    * of on first use; default is none.
    */
   localesToPreload?: string[]
+
+  /** When true (default), the resource manager will keep track of which variation it selected,
+   * allowing clients to view those selections through a call to selectedVariation(s)
+   */
+  trackSelectedVariations?: boolean
 }
 
 export const DefaultResourceManagerOptions: Required<ResourceManagerOptions> = {
   consistentRandom: true,
-  localesToPreload: []
+  localesToPreload: [],
+  trackSelectedVariations: true
 }
 
 /**
@@ -66,6 +72,24 @@ export interface ResourceManager {
    * @returns {Promise<T>} A promise to the rendered object
    */
   renderObject<T> (item: RenderItem): Promise<T>
+
+  /** Retrieves information about the selected variant for a rendered item. This
+   * will only return a result when rendering the item required a variation
+   * selection. If item has been used for multiple calls to a render routine
+   * the result of the first operation will be returned; use selectedVariations
+   * to see all results.
+   * @param {RenderItem} item The item to retrieve the selected variant for
+   * @return {Promise<SelectedVariation>} A promise to the selected variation
+   */
+  selectedVariation (item: RenderItem): Promise<SelectedVariation>
+
+  /** Retrieves information about all selected variations for rendered item. This
+   * will only return a result for items that required a variation selection
+   * during rendering. Results are ordered by the ordering of the calls to render
+   * routines.
+   * @return {Promise<SelectedVariation[]>} A promise to the selected variations
+   */
+  selectedVariations (): Promise<SelectedVariation[]>
 
   /** The locale the resource manager uses */
   readonly locale: string
@@ -118,6 +142,15 @@ export function ri (key: string, params?: RenderParams, options?: RenderOptions)
     params: params,
     options: options
   }
+}
+
+export interface SelectedVariation {
+  /** The RenderItem instance passed to render(Batch) */
+  readonly item: RenderItem
+  /** The full key of the selected variation (i.e., this.ri.key + '.' + this.variationKey) */
+  readonly key: string
+  /** The selected variation subkey */
+  readonly variationKey: string
 }
 
 export * from './i18next'
