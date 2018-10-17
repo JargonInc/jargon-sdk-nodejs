@@ -16,7 +16,7 @@ import * as i18n from 'i18next'
 import * as syncBackend from 'i18next-sync-fs-backend'
 import { ICU } from './icuFormat'
 
-import { DefaultResourceManagerOptions, RenderItem, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions, SelectedVariation } from '.'
+import { DefaultResourceManagerOptions, RenderItem, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions, SelectedVariation, RenderParams } from '.'
 
 export class I18NextResourceManager implements ResourceManager {
   protected readonly _rv = Math.random()
@@ -25,8 +25,13 @@ export class I18NextResourceManager implements ResourceManager {
   constructor (protected _translator: i18n.i18n, readonly locale: string, protected _opts: Required<ResourceManagerOptions>) {
   }
 
-  public render (item: RenderItem): Promise<string> {
-    let s = this._translator.t(item.key, item.params)
+  public async render (item: RenderItem): Promise<string> {
+    let params = item.params
+    if (params) {
+      params = await this.processParams(params)
+    }
+
+    let s = this._translator.t(item.key, params)
     if (typeof s === 'string') {
       return Promise.resolve(s)
     } else if (typeof s === 'object') {
@@ -90,6 +95,23 @@ export class I18NextResourceManager implements ResourceManager {
 
     let i = Math.floor(rv * keys.length)
     return keys[i]
+  }
+
+  protected async processParams (params: RenderParams): Promise<RenderParams> {
+    let copied = false
+    for (let k in params) {
+      let v = params[k]
+      if (typeof v === 'object') {
+        if (!copied) {
+          params = Object.assign({}, params)
+          copied = true
+        }
+
+        params[k] = await this.render(v)
+      }
+    }
+
+    return params
   }
 }
 

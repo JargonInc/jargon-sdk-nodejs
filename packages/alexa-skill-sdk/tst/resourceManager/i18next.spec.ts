@@ -132,21 +132,6 @@ it('returns the raw number', async () => {
   expect(v).equals(42)
 })
 
-async function checkVariations (rm: ResourceManager, item: RenderItem) {
-  let i = 0
-  let previous = await rm.render(item)
-  expect(previous).to.be.oneOf(['v1','v2'])
-
-  let sawVariation = false
-  while (i++ < 10) {
-    let s = await rm.render(item)
-    expect(previous).to.be.oneOf(['v1','v2'])
-    sawVariation = sawVariation || s !== previous
-  }
-
-  expect(sawVariation).to.be.true
-}
-
 it('returns the number we passed in', async () => {
   let s = await rm.render(ri('number', { num: 4 }))
   expect(s).equals('4')
@@ -176,3 +161,50 @@ it('works in batch', async () => {
   expect(batch[1]).equals('Hello Jonathan')
   expect(batch[2]).equals('Hello World')
 })
+
+it('renders nested render items correctly', async () => {
+  let inner = ri('wordifier', { bird: 'hummingbird' })
+  let item = ri('numberAndSub', {
+    num: 1,
+    word: inner
+  })
+
+  let s = await rm.render(item)
+  expect(s).equals('one hummingbird is the word')
+})
+
+it('returns selected variations when nested render items are present', async () => {
+  // We need to use a fresh ResourceManager for this test
+  let rm = rf.forLocale(locale)
+
+  let inner = ri('anotherVariation')
+  let item = ri('variationWithParam', {
+    param: inner
+  })
+
+  let s = await rm.render(item)
+  let sv = await rm.selectedVariations()
+
+  expect(sv).length(2)
+  expect(sv[0].item).equals(inner)
+  expect(sv[1].item).equals(item)
+
+  let param = await rm.render(ri(sv[0].key))
+  let rendered = await rm.render(ri(sv[1].key, { param: param }))
+  expect(s).equals(rendered)
+})
+
+async function checkVariations (rm: ResourceManager, item: RenderItem) {
+  let i = 0
+  let previous = await rm.render(item)
+  expect(previous).to.be.oneOf(['v1','v2'])
+
+  let sawVariation = false
+  while (i++ < 10) {
+    let s = await rm.render(item)
+    expect(previous).to.be.oneOf(['v1','v2'])
+    sawVariation = sawVariation || s !== previous
+  }
+
+  expect(sawVariation).to.be.true
+}

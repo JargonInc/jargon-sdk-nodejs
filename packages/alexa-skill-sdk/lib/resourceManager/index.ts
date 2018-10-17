@@ -100,7 +100,7 @@ export interface ResourceManager {
  * strings, and values either strings or numbers
  */
 export interface RenderParams {
-  [param: string]: string | number
+  [param: string]: string | number | RenderItem
 }
 
 /**

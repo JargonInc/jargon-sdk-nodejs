@@ -104,15 +104,39 @@ interface RenderItem {
 }
 ```
 
-`RenderParams` have your parameter names as keys, and either a string or number for values.
+`RenderParams` are a map from parameter name to a string, number, or `RenderItem` instance.
+```typescript
+interface RenderParams {
+  [param: string]: string | number | RenderItem
+}
+```
 
-The `ri` helper function simplifies constructing a RenderItem:
-```javascript
+The use of a `RenderItem` instance as a parameter value makes it easy to compose multiple
+resource together at runtime. This is useful when a parameter value varies across locales,
+or when you want the SDK to select across multiple variations for a parameter value, and reduces
+the need to chain together multiple calls into the  `ResourceManager`.
+
+The `ri` helper function simplifies constructing a `RenderItem`:
+```typescript
+function ri (key: string, params?: RenderParams, options?: RenderOptions): RenderItem
+
 handlerInput.jrb.speak(ri('sayHello', { 'name': 'World' }))
 ```
 
+`RenderOptions` allows fine-grained control of rendering behavior for a specific call, overriding
+the configuration set at the `ResourceManager` level.
+
+```typescript
+interface RenderOptions {
+  /** When true, forces the use of a new random value for selecting variations,
+   * overriding consistentRandom
+   */
+  readonly forceNewRandom?: boolean
+}
+```
+
 ### JargonSkillBuilder
-This wraps the ASK skill builder, and handles all details of intializing the Jargon SDK,
+`JargonSkillBuilder` wraps the ASK skill builder, and handles all details of intializing the Jargon SDK,
 installing request and response interceptors, and so on.
 ```javascript
 const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
@@ -206,7 +230,6 @@ In your skill handlers access the Jargon reponse builder via one of the followin
 
 TypeScript users: you'll need to cast `handlerInput` to `JargonHandlerInput` if you want to use one of
 the first two forms.
-
 
 ## Setting up a new skill
 
