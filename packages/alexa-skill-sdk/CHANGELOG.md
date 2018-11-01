@@ -1,5 +1,7 @@
-### 1.0.5
+### 1.0.6
+Remove .nyc_output directory from distribution package.
 
+### 1.0.5
 Move functionality that isn't specific to the Alexa Skill Kit to sdk-core.
 
 ### 1.0.4
