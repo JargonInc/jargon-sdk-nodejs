@@ -1,4 +1,4 @@
-import { I18NextResourceManagerFactory, ri, DefaultResourceManagerOptions } from '../../lib/resourceManager'
+import { I18NextResourceManagerFactory, ri, DefaultResourceManagerOptions } from '@jargon/sdk-core'
 import { JRB } from '../../lib/responseBuilder'
 import { expect } from 'chai'
 import { ResponseFactory } from 'ask-sdk-core'

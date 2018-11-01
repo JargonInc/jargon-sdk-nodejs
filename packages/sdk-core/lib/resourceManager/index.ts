@@ -11,6 +11,7 @@
  * permissions and limitations under the License.
  */
 
+import { I18NextResourceManagerFactory } from './i18next'
 export interface ResourceManagerOptions {
   /** When true (default), the resource manager will use the same random value
    * when randomly selecting among variations; this ensures that calls to different routines
@@ -153,4 +154,5 @@ export interface SelectedVariation {
   readonly variationKey: string
 }
 
+export const DefaultResourceManagerFactory = I18NextResourceManagerFactory
 export * from './i18next'

@@ -1,0 +1,36 @@
+{
+  "hello":"world",
+  "needsEscaping":"foo & bar",
+  "nested":{
+    "key":"nested value"
+  },
+  "number":"{num, plural, =0 {zero} =1 {one} other {#}}",
+  "numberAndSub":"{num, plural, =0 {zero {word}} =1 {one {word}} other {# {word}}}",
+  "object":{
+    "boolVal":true,
+    "numVal":32,
+    "greeter":"Hello {name}",
+    "child":{
+      "grandchild":{
+        "numString":"{num, plural, =0 {zero} =1 {one} other {#}}"
+      }
+    }
+  },
+  "rawBoolean":false,
+  "rawNumber":42,
+  "substitution":"Hello {name}",
+  "variation":{
+    "v1":"v1",
+    "v2":"v2"
+  },
+  "variationWithParam":{
+    "v1":"v1 {param}",
+    "v2":"v2 {param}"
+  },
+  "anotherVariation":{
+    "v1":"v1",
+    "v2":"v2",
+    "v3":"v3"
+  },
+  "wordifier":"{bird} is the word"
+}

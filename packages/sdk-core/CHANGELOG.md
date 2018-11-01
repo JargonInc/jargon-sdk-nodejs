@@ -1,6 +1,7 @@
 ### 1.0.5
-
-Move functionality that isn't specific to the Alexa Skill Kit to sdk-core.
+Initial version as a standalone package. No functional changes, though we now export
+a "DefaultResourceManagerFactory" so client code doesn't need to explicitly select
+an implementation.
 
 ### 1.0.4
 #### Suport RenderItem instances as RenderParams values

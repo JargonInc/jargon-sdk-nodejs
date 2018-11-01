@@ -1,0 +1,14 @@
+coverage/
+doc/
+examples/
+lib/
+node_modules/
+resources/
+tst/
+.git
+gulpfile.js
+gulpfile-base.js
+package-lock.json
+tsconfig.json
+tslint.json
+yarn.lock

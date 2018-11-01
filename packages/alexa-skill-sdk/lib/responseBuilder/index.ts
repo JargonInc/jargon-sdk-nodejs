@@ -19,7 +19,7 @@ import {
 } from 'ask-sdk-model'
 import AudioItemMetadata = interfaces.audioplayer.AudioItemMetadata
 
-import { RenderItem } from '../resourceManager'
+import { RenderItem } from '@jargon/sdk-core'
 
 export interface JargonResponseBuilder {
   /**

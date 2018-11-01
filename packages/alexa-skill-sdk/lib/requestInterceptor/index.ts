@@ -12,7 +12,7 @@
  */
 
 import { HandlerInput, RequestInterceptor } from 'ask-sdk-core'
-import { ResourceManagerFactory, ResourceManager } from '../resourceManager'
+import { ResourceManagerFactory, ResourceManager } from '@jargon/sdk-core'
 import { JRB, JargonResponseBuilder } from '../responseBuilder'
 
 export interface JargonHandlerInput extends HandlerInput {

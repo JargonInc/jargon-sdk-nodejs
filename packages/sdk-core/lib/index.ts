@@ -11,7 +11,4 @@
  * permissions and limitations under the License.
  */
 
-export { DefaultSkillBuilderOptions, JargonSkillBuilder, SkillBuilderOptions } from './skillBuilder'
-export { JargonHandlerInput } from './requestInterceptor'
-export { DefaultResourceManagerOptions, RenderItem, RenderOptions, RenderParams, ResourceManagerOptions, ri } from '@jargon/sdk-core'
-export { JargonResponseBuilder } from './responseBuilder'
+export { DefaultResourceManagerFactory, DefaultResourceManagerOptions, I18NextResourceManager, I18NextResourceManagerFactory, RenderItem, RenderOptions, RenderParams, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, ri } from './resourceManager'

@@ -13,9 +13,13 @@
 	},
 	"devDependencies": {
 		"lerna": "^3.4.0"
-  },
-  "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**/ts-node"]
-  }
+	},
+	"workspaces": {
+		"packages": [
+			"packages/*"
+		],
+		"nohoist": [
+			"**/ts-node"
+		]
+	}
 }

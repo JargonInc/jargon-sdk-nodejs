@@ -1,11 +1,10 @@
 # Jargon NodeJS SDKs
 
-This repo contains Jargon's nodejs SDKs for voice platform content management.
+This repo contains Jargon's nodejs SDKs and supporting packages for voice platform content management.
 
 Our first supported platform is Alexa: [@jargon/alexa-skill-sdk](https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/alexa-skill-sdk).
 
-Currently all functionality lives in that one package, but common pieces will be factored out into a core library once
-we launch the SDK for additional platforms, hence the lerna setup.
+Functionality common to all platforms and SDKs is in [@jargon/sdk-core](https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/sdk-core).
 
 ## Support
 

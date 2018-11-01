@@ -15,7 +15,7 @@ import { ResponseBuilder } from 'ask-sdk-core'
 import { Directive, Intent, interfaces, Response } from 'ask-sdk-model'
 import { JargonResponseBuilder } from '.'
 import { escapeSSML } from './escape'
-import { RenderItem, ResourceManager } from '../resourceManager'
+import { RenderItem, ResourceManager } from '@jargon/sdk-core'
 import AudioItemMetadata = interfaces.audioplayer.AudioItemMetadata
 
 export class JRB implements JargonResponseBuilder {

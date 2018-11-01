@@ -12,7 +12,7 @@
  */
 
 import { BaseSkillBuilder } from 'ask-sdk-core'
-import { ResourceManagerFactory, I18NextResourceManagerFactory, ResourceManagerOptions, DefaultResourceManagerOptions } from '../resourceManager'
+import { ResourceManagerFactory, DefaultResourceManagerFactory, ResourceManagerOptions, DefaultResourceManagerOptions } from '@jargon/sdk-core'
 import { JargonRequestInterceptor } from '../requestInterceptor'
 
 export interface SkillBuilderOptions extends ResourceManagerOptions {
@@ -28,7 +28,7 @@ export class JargonSkillBuilder {
 
   constructor (opts: SkillBuilderOptions = {}) {
     this._options = Object.assign({}, DefaultSkillBuilderOptions, opts)
-    this._rmf = new I18NextResourceManagerFactory(this._options)
+    this._rmf = new DefaultResourceManagerFactory(this._options)
   }
 
   wrap <T extends BaseSkillBuilder> (base: T): T {

@@ -1,27 +1,12 @@
-# Jargon SDK for Amazon Alexa (nodejs)
+# `@jargon/sdk-core`
 
-The Jargon SDK makes it easy for skill developers to manage their runtime content, and to support
-multiple languages from within their skill.
-
-Need help localizing your skills to new languages and locales? Contact Jargon at localization@jargon.com.
-
-## Requirements
-
-This version of the SDK works with Amazon Alexa skills that are built using the [ASK SDK v2 for Node.js](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs/tree/2.0.x/ask-sdk).
-
-Like the ASK SDK, the Jargon SDK is built using [TypeScript](https://www.typescriptlang.org/index.html),
-and includes typing information in the distribution package.
+Jargon's SDK core package contains functionality common to multiple voice platforms and
+frameworks.
 
 ## Core concepts
 
 ### Content resources and resource files
-Content resources define the text that your skill outputs to users, via Alexa's voice, card content,
-or screen content. It's important that these resources live outside of your skill's source code to
-make it possible to localize them into other languages.
-
-The Jargon SDK expects resource files to live in the "resources" subdirectory within your lambda
-code (i.e., skill_root/lambda/custom/resources). Each locale has a single resouce file, named for
-that locale (e.g., "en-US.json").
+Content resources define the text that may vary across user locales.
 
 Resource files are JSON, with a single top-level object (similar to package.json). The keys within that
 object are the identifiers you'll use to refer to specific resources within your source code. Nested objects
@@ -64,8 +49,7 @@ alternative forms to handle things like pluralization and gender.
 ```
 
 ### Variations
-It's important for Alexa skills to vary the words they use in response to users, lest they sound robotic. The Jargon SDK
-makes ths simple with built-in variation support. Variations are defined using nested objects:
+Resources can have multiple variations. Variations are defined using nested objects:
 ```json
 {
   "resourceWithVariations":{
@@ -76,19 +60,28 @@ makes ths simple with built-in variation support. Variations are defined using n
 }
 ```
 
-When rendering the key `resourceWithVariations` the Jargon SDK will choose a variation at random (with other more complex
+When rendering the key `resourceWithVariations` the `ResourceManager` will choose a variation at random (with other more complex
 methods coming in future versions). If you render the same resource multiple times within a single request (e.g., for spoken
-content and for card or screen content) the SDK will by default consistently choose the same variation.
+content and for card or screen content) the `ResourceManager` will by default consistently choose the same variation.
 
 Note that you can always select a specific variation using its fully-qualified key (e.g., `resourceWithVariations.v1`)
 
-You can determine which variation the SDK chose via the ResourceManager's selectedVariation(s) routines.
+You can determine which variation the was choses via the ResourceManager's selectedVariation(s) routines.
 
-## Runtime interface
+## Functionality
 
-### JargonResponseBuilder
-The core class you'll work with. JargonResponseBuilder mirror's the ASK SDK response builder, but changes string
-parameters containing content presented to users to RenderItems.
+### Resource management and runtime rendering
+
+`ResourceManager` allows clients to access content resources stored in locale-specifc
+files, and to render those resources at runtime, substituting parameters.
+
+A `ResourceManager` instance is meant to live only for the lifetime of a single request, and is bound
+to a specific locale. Instances are created via a `ResourceManagerFactory` instance, normally `DefaultResourceManagerFactory`.
+
+Resource files live in "resources" subdirectory of the process's runtime directory; this will soon be customizeable via
+`ResourceManagerOptions`.
+
+## Runtime Interface
 
 ### RenderItem
 A RenderItem specifies a resource key, optional parameters, and options to control details of the rendering (which
@@ -120,7 +113,7 @@ The `ri` helper function simplifies constructing a `RenderItem`:
 ```typescript
 function ri (key: string, params?: RenderParams, options?: RenderOptions): RenderItem
 
-handlerInput.jrb.speak(ri('sayHello', { 'name': 'World' }))
+rm.render(ri('sayHello', { 'name': 'World' }))
 ```
 
 `RenderOptions` allows fine-grained control of rendering behavior for a specific call, overriding
@@ -135,21 +128,8 @@ interface RenderOptions {
 }
 ```
 
-### JargonSkillBuilder
-`JargonSkillBuilder` wraps the ASK skill builder, and handles all details of intializing the Jargon SDK,
-installing request and response interceptors, and so on.
-```javascript
-const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
-```
-
 ### ResourceManager
-Internally `JargonResponseBuilder` uses a `ResourceManager` to render strings and objects. You
-can directly access the resource manager if desired, for use cases such as:
-* obtaining locale-specific values that are used as parameters for later rendering operations
-* incrementally or conditionally constructing complex content
-* response directives that internally have locale-specific content (such as an upsell directive)
-* batch rendering of multiple resources
-* determining which variation the ResourceManager chose
+`ResourceManager` is the core interface for rendering locale-specific content at runtime.
 
 ```typescript
 export interface ResourceManager {
@@ -197,44 +177,78 @@ export interface ResourceManager {
 
 Note that the render routines return `Promise`s to the rendered content, not the content directly.
 
-`ResourceManager` is part of the package [@jargon/sdk-core](https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/sdk-core),
-and can be used directly from code that isn't based on ASKv2.
+### ResourceManagerFactory
+A `ResourceManagerFactory` construct locale-specific `ResourceManager` instance.
 
-## Adding to an existing skill
+```typescript
+export interface ResourceManagerFactory {
+  /** Constructs a ResourceManager for the specified locale
+   * @param {string} locale
+   */
+  forLocale (locale: string): ResourceManager
+}
+```
+Locales name use the standard [BCP-47](https://tools.ietf.org/html/bcp47) tags, such as 'en-US' or 'de-DE'.
 
-### Installation
-First add the Jargon SDK as a dependency of your lambda code (skill_root/lambda/custom)
-  * npm i --save @jargon/alexa-skill-sdk
-  * yarn add @jargon/alexa-skill-sdk
+### ResourceManagerOptions
+Options for controlling resource manager functionality. Defaults are specified in `DefaultResourceManagerOptions`.
 
-Next, wrap the Alexa skill builder with Jargon's skill builder:
-```javascript
-// Import the Jargon SDK
-const Jargon = require('@jargon/alexa-skill-sdk')
+```typescript
+export interface ResourceManagerOptions {
+  /** When true (default), the resource manager will use the same random value
+   * when randomly selecting among variations; this ensures that calls to different routines
+   * (speak, reprompt, etc.) with identical RenderItem inputs will render the same output.
+   * When false, each render call will use a different random value, leading to possible
+   * inconsistencies in the final response. Note that this option can be overridden via
+   * a RenderItem option.
+   */
+  consistentRandom?: boolean
 
-// Wrap the skill builder
-const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
+  /** Resource files for the provided locales will be loaded during initialization instead
+   * of on first use; default is none.
+   */
+  localesToPreload?: string[]
+
+  /** When true (default), the resource manager will keep track of which variation it selected,
+   * allowing clients to view those selections through a call to selectedVariation(s)
+   */
+  trackSelectedVariations?: boolean
+}
+
+export const DefaultResourceManagerOptions: Required<ResourceManagerOptions> = {
+  consistentRandom: true,
+  localesToPreload: [],
+  trackSelectedVariations: true
+}
 ```
 
-### Externalize resources
-The content that your skill outputs via speak(), reprompt(), etc., needs to move from wherever
-it currently lives in to Jargon resource files. That's currently a manual step, but in the future
-we'll have tools to help automate portions of the process.
+### RenderOptions
+Options for controlling rendering behavior, overriding the `ResourceManager`s configuration.
+Defaults are specified in `DefaultRenderOptions`.
 
-Resource files go under skill_root/lambda/custom/resources, and are named by the locale they contain
-content for (e.g., "en-US.json").
+```typescript
+/**
+ * Options control additional rendering behavior, overridding the
+ * settings configured at the ResourceManager level.
+ */
+export interface RenderOptions {
+  /** When true, forces the use of a new random value for selecting variations,
+   * overriding consistentRandom
+   */
+  readonly forceNewRandom?: boolean
+}
 
-### Switch over to the Jargon response builder
-In your skill handlers access the Jargon reponse builder via one of the following methods:
-* `handlerInput.jrb`
-* `handlerInput.jargonResponseBuilder`
-* `handlerInput.attributesManager.getRequestAttributes().jrb`
-* `handlerInput.attributesManager.getRequestAttributes().jargonResponseBuilder`
+export const DefaultRenderOptions: RenderOptions = {
+  forceNewRandom: false
+}
+```
 
-TypeScript users: you'll need to cast `handlerInput` to `JargonHandlerInput` if you want to use one of
-the first two forms.
+## Usage
 
-## Setting up a new skill
-
-We'll soon have templates in place for use with the ASK CLI for bootstrapping new skills with
-the Jargon SDK pre-installed, along with skeletons for resource files.
+```javascript
+const sdkCore = require('@jargon/sdk-core');
+const options = {}
+const resourceManagerFactory = new sdkCore.DefaultResourceManagerFactory(options)
+const resourceManager = resourceManagerFactory.forLocale('en-US')
+const contentPromise = resourceManager.render(sdkCore.ri('sayHello', { 'name': 'World' }))
+```
