@@ -87,7 +87,7 @@ You can determine which variation the SDK chose via the ResourceManager's select
 ## Runtime interface
 
 ### JargonResponseBuilder
-The core class you'll work with. JargonResponseBuilder mirror's the ASK SDK response builder, but changes string
+The core class you'll work with. JargonResponseBuilder mirrors the ASK SDK response builder, but changes string
 parameters containing content presented to users to RenderItems.
 
 ### RenderItem
