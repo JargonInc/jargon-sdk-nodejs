@@ -1,3 +1,6 @@
+### 1.0.7
+Version bump for consistency with other packages
+
 ### 1.0.5
 Initial version as a standalone package. No functional changes, though we now export
 a "DefaultResourceManagerFactory" so client code doesn't need to explicitly select

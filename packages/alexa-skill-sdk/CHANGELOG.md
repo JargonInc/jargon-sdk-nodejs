@@ -1,3 +1,6 @@
+### 1.0.7
+Re-export everything from sdk-core instead of specific items.
+
 ### 1.0.6
 Remove .nyc_output directory from distribution package.
 

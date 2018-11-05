@@ -1,3 +1,3 @@
-### 1.0.5
+### 1.0.7
 
 Initial release of the Jargon Jovo plugin
