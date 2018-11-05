@@ -1,0 +1,7 @@
+coverage/
+db/
+dist/
+doc/
+node_modules/
+.nyc_output/
+yarn-error.log

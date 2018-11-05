@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": "lib",
+    "outDir" : "dist",
+    "sourceMap" : true,
+    "alwaysStrict" : true,
+    "declaration" : true,
+    "downlevelIteration": true,
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "lib": [
+      "es2017"
+    ]
+  },
+  "include": ["lib"]
+}
