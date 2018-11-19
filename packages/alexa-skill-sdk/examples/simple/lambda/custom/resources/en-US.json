@@ -1,7 +1,11 @@
 {
+  "CARD_TITLE":"Hello World",
+  "ERROR":"Sorry, I can't understand the command. Please say again.",
+  "GOODBYE":"Goodbye!",
   "HELLO":{
     "v1":"Hello {name}",
     "v2":"Hi there {name}!"
   },
+  "HELP":"You can say hello to me!",
   "WELCOME":"Hello, welcome to a sample skill that uses the Jargon SDK"
 }
