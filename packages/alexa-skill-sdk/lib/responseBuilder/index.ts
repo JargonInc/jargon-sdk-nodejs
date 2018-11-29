@@ -12,6 +12,7 @@
  */
 
 import {
+  canfulfill,
   Directive,
   Intent,
   interfaces,
@@ -150,6 +151,12 @@ export interface JargonResponseBuilder {
    * @returns {JargonResponseBuilder}
    */
   addVideoAppLaunchDirective (source: string, title?: RenderItem, subtitle?: RenderItem): this
+  /**
+   * Adds canFulfillIntent to response.
+   * @param {canfulfill.CanFulfillIntent} canFulfillIntent
+   * @return {ResponseBuilder}
+   */
+  withCanFulfillIntent (canFulfillIntent: canfulfill.CanFulfillIntent): this
   /**
    * Sets shouldEndSession value to null/false/true
    * @param {boolean} val

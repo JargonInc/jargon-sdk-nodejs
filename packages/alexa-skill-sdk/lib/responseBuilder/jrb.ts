@@ -12,7 +12,7 @@
  */
 
 import { ResponseBuilder } from 'ask-sdk-core'
-import { Directive, Intent, interfaces, Response } from 'ask-sdk-model'
+import { canfulfill, Directive, Intent, interfaces, Response } from 'ask-sdk-model'
 import { JargonResponseBuilder } from '.'
 import { escapeSSML } from './escape'
 import { RenderItem, ResourceManager } from '@jargon/sdk-core'
@@ -149,6 +149,11 @@ export class JRB implements JargonResponseBuilder {
     } else {
       this._rb.addVideoAppLaunchDirective(source)
     }
+    return this
+  }
+
+  withCanFulfillIntent (canFulfillIntent: canfulfill.CanFulfillIntent): this {
+    this._rb.withCanFulfillIntent(canFulfillIntent)
     return this
   }
 
