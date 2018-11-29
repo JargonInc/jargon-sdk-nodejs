@@ -12,3 +12,9 @@ it('converts ampersands', () => {
   const e = escapeSSML(s)
   expect(e).equals('<foo>1&amp;2</foo>')
 })
+
+it('leaves escapted ampersands unchanged', () => {
+  const s = '<foo>1&amp;2</foo>'
+  const e = escapeSSML(s)
+  expect(e).equals('<foo>1&amp;2</foo>')
+})

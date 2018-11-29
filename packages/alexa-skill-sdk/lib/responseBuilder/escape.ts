@@ -11,7 +11,7 @@
  * permissions and limitations under the License.
  */
 
-const ampRegex = /&/
+const ampRegex = /&(?!amp;)/
 const amp = '&amp;'
 
 export function escapeSSML (s: string): string {
