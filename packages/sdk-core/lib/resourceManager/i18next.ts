@@ -15,6 +15,7 @@ import * as i18n from 'i18next'
 // @ts-ignore Types not available
 import * as syncBackend from 'i18next-sync-fs-backend'
 import { ICU } from './icuFormat'
+import { JargonResources } from './jargonResources'
 
 import { DefaultResourceManagerOptions, RenderItem, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions, SelectedVariation, RenderParams } from '.'
 
@@ -139,6 +140,32 @@ export class I18NextResourceManagerFactory implements ResourceManagerFactory {
     let ii = this.baseTranslator.cloneInstance().init({
       lng: locale
     })
+
+    let builtinResources: any
+    ii.languages.forEach((language) => {
+      if (!builtinResources && JargonResources[language]) {
+        builtinResources = JargonResources[language]
+      }
+    })
+
+    if (builtinResources) {
+      let add = false
+      let res: any
+      for (res in builtinResources) {
+        add = true
+        ii.languages.forEach((language) => {
+          let bundle = ii.getResourceBundle(language, 'translation')
+          if (bundle && bundle[res]) {
+            add = false
+          }
+        })
+        if (add) {
+          const obj = {}
+          obj[res] = builtinResources[res]
+          ii.addResourceBundle(locale, 'translation', obj, true)
+        }
+      }
+    }
 
     return new I18NextResourceManager(ii, locale, this._opts)
   }

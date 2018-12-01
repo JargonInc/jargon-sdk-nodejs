@@ -194,6 +194,19 @@ it('returns selected variations when nested render items are present', async () 
   expect(s).equals(rendered)
 })
 
+it('uses internal resources', async () => {
+  let s = await rm.render(ri('JARGON_UNHANDLED_RESPONSE'))
+  expect(s).to.be.oneOf(['Sorry, I didn\'t get that. Can you say it again?',
+    'I\'m sorry, I didn\'t understand.  Can you rephrase that?'])
+})
+
+it('respects override of internal resources', async () => {
+  let rm = rf.forLocale('en-GB')
+
+  let s = await rm.render(ri('JARGON_UNHANDLED_RESPONSE'))
+  expect(s).equals('My own response')
+})
+
 async function checkVariations (rm: ResourceManager, item: RenderItem) {
   let i = 0
   let previous = await rm.render(item)
