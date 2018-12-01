@@ -205,6 +205,10 @@ it('respects override of internal resources', async () => {
 
   let s = await rm.render(ri('JARGON_UNHANDLED_RESPONSE'))
   expect(s).equals('My own response')
+
+  s = await rm.render(ri('JARGON_DEFAULT_REPROMPT'))
+  expect(s).to.be.oneOf(['What else can I help you with?',
+    'How else can I help you?'])
 })
 
 async function checkVariations (rm: ResourceManager, item: RenderItem) {
