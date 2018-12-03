@@ -13,34 +13,57 @@
 
 import { ResponseBuilder } from 'ask-sdk-core'
 import { canfulfill, Directive, Intent, interfaces, Response } from 'ask-sdk-model'
-import { JargonResponseBuilder } from '.'
+import { JargonResponseBuilder, JargonResponseBuilderOptions } from '.'
 import { escapeSSML } from './escape'
 import { RenderItem, ResourceManager } from '@jargon/sdk-core'
 import AudioItemMetadata = interfaces.audioplayer.AudioItemMetadata
 
+export const DefaultJargonResponseBuilderOptions: Required<JargonResponseBuilderOptions> = {
+  mergeSpeakAndReprompt: false
+}
+
 export class JRB implements JargonResponseBuilder {
   private _rb: ResponseBuilder
   private _rm: ResourceManager
-  private _q: RBOp[] = []
+  private _opts: Required<JargonResponseBuilderOptions>
 
-  constructor (rb: ResponseBuilder, rm: ResourceManager) {
+  private _q: RBOp[] = []
+  private _speak: string[] = []
+  private _reprompt: string[] = []
+
+  constructor (rb: ResponseBuilder, rm: ResourceManager, opts: JargonResponseBuilderOptions = {}) {
     this._rb = rb
     this._rm = rm
+    this._opts = Object.assign({}, DefaultJargonResponseBuilderOptions, opts)
   }
 
-  speak (speechOutput: RenderItem): this {
+  speak (speechOutput: RenderItem, merge?: boolean): this {
     let p = this._rm.render(speechOutput)
     let op = async (rb: ResponseBuilder) => {
-      return rb.speak(escapeSSML(await p))
+      const val = escapeSSML(await p)
+      if (this._shouldMerge(merge)) {
+        this._speak.push(val)
+      } else {
+        this._speak = [val]
+      }
+
+      return rb
     }
     this._q.push(op)
     return this
   }
 
-  reprompt (repromptSpeechOutput: RenderItem): this {
+  reprompt (repromptSpeechOutput: RenderItem, merge?: boolean): this {
     let p = this._rm.render(repromptSpeechOutput)
     let op = async (rb: ResponseBuilder) => {
-      return rb.reprompt(escapeSSML(await p))
+      const val = escapeSSML(await p)
+      if (this._shouldMerge(merge)) {
+        this._reprompt.push(val)
+      } else {
+        this._reprompt = [val]
+      }
+
+      return rb
     }
     this._q.push(op)
     return this
@@ -171,7 +194,24 @@ export class JRB implements JargonResponseBuilder {
     for (let op of this._q) {
       await op(this._rb)
     }
+
+    if (this._speak.length > 0) {
+      this._rb.speak(this._speak.join(' '))
+    }
+
+    if (this._reprompt.length > 0) {
+      this._rb.reprompt(this._reprompt.join(' '))
+    }
+
     return this._rb.getResponse()
+  }
+
+  private _shouldMerge (merge?: boolean): boolean {
+    if (merge !== undefined) {
+      return merge
+    }
+
+    return this._opts.mergeSpeakAndReprompt
   }
 }
 

@@ -13,7 +13,7 @@
 
 import { HandlerInput, RequestInterceptor } from 'ask-sdk-core'
 import { ResourceManagerFactory, ResourceManager } from '@jargon/sdk-core'
-import { JRB, JargonResponseBuilder } from '../responseBuilder'
+import { JRB, JargonResponseBuilder, JargonResponseBuilderOptions } from '../responseBuilder'
 
 export interface JargonHandlerInput extends HandlerInput {
   jargonResponseBuilder: JargonResponseBuilder
@@ -23,9 +23,11 @@ export interface JargonHandlerInput extends HandlerInput {
 }
 
 export class JargonRequestInterceptor implements RequestInterceptor {
+  private _opts: JargonResponseBuilderOptions
   private _rmf: ResourceManagerFactory
 
-  constructor (rmf: ResourceManagerFactory) {
+  constructor (rmf: ResourceManagerFactory, opts: JargonResponseBuilderOptions = {}) {
+    this._opts = opts
     this._rmf = rmf
   }
 
@@ -35,7 +37,7 @@ export class JargonRequestInterceptor implements RequestInterceptor {
     // @ts-ignore locale isn't defined for all request types
     let locale: string = req.locale || ''
     let rm = this._rmf.forLocale(locale)
-    let jrb = new JRB(handlerInput.responseBuilder, rm)
+    let jrb = new JRB(handlerInput.responseBuilder, rm, this._opts)
 
     let attributes = handlerInput.attributesManager.getRequestAttributes()
     attributes.jargonResponseBuilder = jrb

@@ -14,12 +14,14 @@
 import { BaseSkillBuilder } from 'ask-sdk-core'
 import { ResourceManagerFactory, DefaultResourceManagerFactory, ResourceManagerOptions, DefaultResourceManagerOptions } from '@jargon/sdk-core'
 import { JargonRequestInterceptor } from '../requestInterceptor'
+import { DefaultJargonResponseBuilderOptions, JargonResponseBuilderOptions } from '../responseBuilder'
 
-export interface SkillBuilderOptions extends ResourceManagerOptions {
+export interface SkillBuilderOptions extends ResourceManagerOptions, JargonResponseBuilderOptions {
 }
 
 export const DefaultSkillBuilderOptions: Required<SkillBuilderOptions> = {
-  ...DefaultResourceManagerOptions
+  ...DefaultResourceManagerOptions,
+  ...DefaultJargonResponseBuilderOptions
 }
 
 export class JargonSkillBuilder {

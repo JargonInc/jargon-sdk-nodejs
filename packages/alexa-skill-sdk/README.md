@@ -88,7 +88,74 @@ You can determine which variation the SDK chose via the ResourceManager's select
 
 ### JargonResponseBuilder
 The core class you'll work with. JargonResponseBuilder mirrors the ASK SDK response builder, but changes string
-parameters containing content presented to users to RenderItems.
+parameters containing content presented to users to RenderItems (see below).
+
+By default the `speak` and `reprompt` methods replace the content from previous calls to those methods; this behavior mirrors
+that of corresponding ASK SDK methods. There are two ways to change this behavior such to multiple calls to result in content
+getting merged (with a space in between) instead of replaced:
+1. When constructing the `JargonSkillBuilder` (described below) pass in an options objeect with `mergeSpeakAndReprompt` set to true
+1. Set the `merge` parameter to the `speak` or `reprompt` method to true
+
+When `mergeSpeakAndReprompt` is true the default replace behavior can be used for specific calls to `speak` or `reprompt` by
+setting the `merge` parameter to false.
+
+Note that each indivdual call to `speak` or `reprompt` should contain content that can stand alone (e.g., a full sentence or
+paragraph) to minimize the chances that the order of the content would change across langauges.
+
+```typescript
+export interface JargonResponseBuilder {
+  /**
+   * Has Alexa say the provided speech to the user
+   * @param {RenderItem} speechOutput The item to render for the speech content
+   * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options.
+   * True merges the rendered content with previously rendered content; false replaces any previous content
+   * @returns {ResponseBuilder}
+   */
+  speak (speechOutput: RenderItem, merge?: boolean): this
+  /**
+   * Has alexa listen for speech from the user. If the user doesn't respond within 8 seconds
+   * then has alexa reprompt with the provided reprompt speech
+   * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt conent
+   * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options
+   * True merges the rendered content with previously rendered content; false replaces any previous content
+   * @returns {ResponseBuilder}
+   */
+  reprompt (repromptSpeechOutput: RenderItem, merge?: boolean): this
+  /**
+   * Renders a simple card with the following title and content
+   * @param {RenderItem} cardTitle
+   * @param {RenderItem} cardContent
+   * @returns {JargonResponseBuilder}
+   */
+  withSimpleCard (cardTitle: RenderItem, cardContent: RenderItem): this
+  /**
+   * Renders a standard card with the following title, content and image
+   * @param {RenderItem} cardTitle
+   * @param {RenderItem} cardContent
+   * @param {string} smallImageUrl
+   * @param {string} largeImageUrl
+   * @returns {JargonResponseBuilder}
+   */
+  withStandardCard (cardTitle: RenderItem, cardContent: RenderItem, smallImageUrl?: string, largeImageUrl?: string): this
+    /**
+   * Adds a hint directive - show a hint on the screen of the echo show
+   * @param {RenderItem} text plain text to show on the hint
+   * @returns {JargonResponseBuilder}
+   */
+  addHintDirective (text: RenderItem): this
+  /**
+   * Adds a VideoApp play directive to play a video
+   *
+   * @param {string} source Identifies the location of video content at a remote HTTPS location.
+   * The video file must be hosted at an Internet-accessible HTTPS endpoint.
+   * @param {RenderItem} title (optional) title that can be displayed on VideoApp.
+   * @param {RenderItem} subtitle (optional) subtitle that can be displayed on VideoApp.
+   * @returns {JargonResponseBuilder}
+   */
+  addVideoAppLaunchDirective (source: string, title?: RenderItem, subtitle?: RenderItem): this
+
+  // Additional methods are identical to ResponseBuilder in the ASK SDK
+```
 
 ### RenderItem
 A RenderItem specifies a resource key, optional parameters, and options to control details of the rendering (which

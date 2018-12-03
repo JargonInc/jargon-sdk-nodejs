@@ -26,16 +26,20 @@ export interface JargonResponseBuilder {
   /**
    * Has Alexa say the provided speech to the user
    * @param {RenderItem} speechOutput The item to render for the speech content
+   * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options.
+   * True merges the rendered content with previously rendered content; false replaces any previous content
    * @returns {ResponseBuilder}
    */
-  speak (speechOutput: RenderItem): this
+  speak (speechOutput: RenderItem, merge?: boolean): this
   /**
    * Has alexa listen for speech from the user. If the user doesn't respond within 8 seconds
    * then has alexa reprompt with the provided reprompt speech
    * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt conent
+   * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options
+   * True merges the rendered content with previously rendered content; false replaces any previous content
    * @returns {ResponseBuilder}
    */
-  reprompt (repromptSpeechOutput: RenderItem): this
+  reprompt (repromptSpeechOutput: RenderItem, merge?: boolean): this
   /**
    * Renders a simple card with the following title and content
    * @param {RenderItem} cardTitle
@@ -174,6 +178,15 @@ export interface JargonResponseBuilder {
    * @returns {Promise<Response>}
    */
   getResponse (): Promise<Response>
+}
+
+export interface JargonResponseBuilderOptions {
+  /**
+   * If true, repeated calls to speak or reprompt will merge their
+   * inputs into a single string (separated by spaces). If false (default),
+   * a call to speak or reprompt replaces any previous content
+   */
+  mergeSpeakAndReprompt?: boolean
 }
 
 export * from './jrb'
