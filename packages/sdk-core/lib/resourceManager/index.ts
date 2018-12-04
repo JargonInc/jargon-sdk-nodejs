@@ -12,6 +12,8 @@
  */
 
 import { I18NextResourceManagerFactory } from './i18next'
+import { JargonResources } from './jargonResources'
+
 export interface ResourceManagerOptions {
   /** When true (default), the resource manager will use the same random value
    * when randomly selecting among variations; this ensures that calls to different routines
@@ -27,6 +29,13 @@ export interface ResourceManagerOptions {
    */
   localesToPreload?: string[]
 
+  /** When set, this is a list of resources which will be appended to the user's resources
+  * This JSON object should specify resources per language, and defaults to JargonResources
+  * If the user has values with the same keys in their input, then those values will be used
+  * instead of the appended resources
+  */
+  appendedResources?: any
+
   /** When true (default), the resource manager will keep track of which variation it selected,
    * allowing clients to view those selections through a call to selectedVariation(s)
    */
@@ -36,6 +45,7 @@ export interface ResourceManagerOptions {
 export const DefaultResourceManagerOptions: Required<ResourceManagerOptions> = {
   consistentRandom: true,
   localesToPreload: [],
+  appendedResources: JargonResources,
   trackSelectedVariations: true
 }
 

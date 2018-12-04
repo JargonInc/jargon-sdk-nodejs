@@ -1,3 +1,5 @@
 {
-  "JARGON_UNHANDLED_RESPONSE":"My own response"
+  "Jargon": {
+    "unhandledResponse": "My own response"
+  }
 }

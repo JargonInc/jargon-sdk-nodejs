@@ -12,14 +12,16 @@
 */
 
 export const JargonResources = {
-  'en': {
-    'JARGON_UNHANDLED_RESPONSE': {
-      'v1': 'Sorry, I didn\'t get that. Can you say it again?',
-      'v2': 'I\'m sorry, I didn\'t understand.  Can you rephrase that?'
-    },
-    'JARGON_DEFAULT_REPROMPT': {
-      'v1': 'What else can I help you with?',
-      'v2': 'How else can I help you?'
+  "en": {
+    "Jargon": {
+      "unhandledResponse": {
+        "v1": "Sorry, I didn't get that. Can you say it again?",
+        "v2": "I'm sorry, I didn't understand.  Can you rephrase that?"
+      },
+      "defaultReprompt": {
+        "v1": "What else can I help you with?",
+        "v2": "How else can I help you?"
+      }
     }
   }
 }
