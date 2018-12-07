@@ -12,7 +12,6 @@
  */
 
 import { I18NextResourceManagerFactory } from './i18next'
-
 export interface ResourceManagerOptions {
   /** When true (default), the resource manager will use the same random value
    * when randomly selecting among variations; this ensures that calls to different routines
