@@ -228,7 +228,7 @@ it('understands internal resources of different locales', async () => {
       }
     }
   }
-  let rf = new I18NextResourceManagerFactory({ appendedResources: testResources })
+  let rf = new I18NextResourceManagerFactory({}, testResources)
   let rm = rf.forLocale('en-US')
   let s = await rm.render(ri('Jargon.defaultReprompt'))
   expect(s).equals('An American reprompt')
