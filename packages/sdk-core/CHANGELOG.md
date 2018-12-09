@@ -1,3 +1,6 @@
+### 1.0.9
+Fix bad release
+
 ### 1.0.8
 Fix handling of arrays in renderObject calls
 
