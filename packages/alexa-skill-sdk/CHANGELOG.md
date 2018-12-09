@@ -1,3 +1,6 @@
+### 1.1.1
+Change version reference for @jargon/sdk-core to allow everything in the 1.x series, starting at 1.0.8
+
 ### 1.1.0
 #### Optional JargonSkillBuilder behavior to combine multiple calls to speak and reprompt
 By default the `speak` and `reprompt` methods replace the content from previous calls to those methods; this behavior mirrors
