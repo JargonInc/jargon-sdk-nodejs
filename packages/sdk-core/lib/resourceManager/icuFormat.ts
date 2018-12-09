@@ -50,7 +50,7 @@ export class ICU {
   }
 
   addLocaleData (data: any) {
-    let locales = Object.prototype.toString.apply(data) === '[object Array]' ? data : [data]
+    let locales = Array.isArray(data) ? data : [data]
 
     locales.forEach((localeData: any) => {
       if (localeData && localeData.locale) {
@@ -66,6 +66,9 @@ export class ICU {
 
   parse (res: any, options: any, lng: string, ns: string, key: string, info: any) {
     if (typeof res === 'object') {
+      if (Array.isArray(res)) {
+        return this.parseArray(res, options, lng, ns, key, info)
+      }
       return this.parseObject(res, options, lng, ns, key, info)
     } else if (typeof res === 'boolean' || typeof res === 'number') {
       return res
@@ -94,6 +97,18 @@ export class ICU {
       result[k] = this.parse(val, options, lng, ns, key, info)
     }
 
+    return result
+  }
+
+  parseArray (res: any[], options: any, lng: string, ns: string, path: string, info: any) {
+    let result: any[] = []
+    for (let k in res) {
+      let key = `${path}[${k}]`
+      // @ts-ignore
+      let val: any = res[k]
+      // @ts-ignore
+      result[k] = this.parse(val, options, lng, ns, key, info)
+    }
     return result
   }
 

@@ -98,6 +98,18 @@ it('returns the rendered object', async () => {
   expect(obj.numVal).equals(32)
   expect(obj.greeter).equals('Hello World')
   expect(obj.child.grandchild.numString).equals('7')
+  expect(obj.arr).to.have.members([1, 2, 3, 4, 5])
+})
+
+it('returns the rendered array', async () => {
+  let item = ri('arrayWithVars', { a: 1, b: 'second' })
+  let arr: any = await rm.renderObject(item)
+  expect(arr).to.be.an('array')
+  expect(arr).to.have.length(3)
+
+  // Parameters are expected to be stringify, and we need to a deep check for
+  // the object within the array
+  expect(arr).to.have.deep.members(['1', 'second', { nested: 'object' }])
 })
 
 it('rejects an attempt to load a raw boolean', async () => {
