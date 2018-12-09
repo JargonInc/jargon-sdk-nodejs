@@ -1,3 +1,6 @@
+### 1.0.8
+Fix handling of arrays in renderObject calls
+
 ### 1.0.7
 Version bump for consistency with other packages
 
