@@ -34,7 +34,7 @@ export class JargonSkillBuilder {
   }
 
   wrap <T extends BaseSkillBuilder> (base: T): T {
-    base.addRequestInterceptors(new JargonRequestInterceptor(this._rmf))
+    base.addRequestInterceptors(new JargonRequestInterceptor(this._rmf, this._options))
     return base
   }
 }
