@@ -1,6 +1,6 @@
 {
   "name": "@jargon/alexa-skill-sdk",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "The Jargon Alexa Skill SDK makes it easy to manage the content of your custom Alexa skill",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
     "SDK"
   ],
   "dependencies": {
-    "@jargon/sdk-core": "^1.0.8"
+    "@jargon/sdk-core": "^1.0.9"
   },
   "peerDependencies": {
     "ask-sdk-core": "2.x",

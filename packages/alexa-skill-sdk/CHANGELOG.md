@@ -1,3 +1,6 @@
+### 1.1.2
+Fix bug with JargonSkillBuilder not passing options down to the request interceptor
+
 ### 1.1.1
 Change version reference for @jargon/sdk-core to allow everything in the 1.x series, starting at 1.0.8
 
