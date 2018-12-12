@@ -5,12 +5,36 @@ multiple languages from within their skill.
 
 Need help localizing your skills to new languages and locales? Contact Jargon at localization@jargon.com.
 
+- [Jargon SDK for Amazon Alexa (nodejs)](#jargon-sdk-for-amazon-alexa-nodejs)
+  - [Requirements](#requirements)
+  - [Core concepts](#core-concepts)
+    - [Content resources and resource files](#content-resources-and-resource-files)
+    - [Resource value format](#resource-value-format)
+      - [Named parameters](#named-parameters)
+      - [Plural forms](#plural-forms)
+      - [Gendered forms](#gendered-forms)
+    - [Variations](#variations)
+  - [Runtime interface](#runtime-interface)
+    - [JargonResponseBuilder](#jargonresponsebuilder)
+    - [RenderItem](#renderitem)
+    - [JargonSkillBuilder](#jargonskillbuilder)
+    - [ResourceManager](#resourcemanager)
+  - [Adding to an existing skill](#adding-to-an-existing-skill)
+    - [Installation](#installation)
+    - [Externalize resources](#externalize-resources)
+    - [Switch over to the Jargon response builder](#switch-over-to-the-jargon-response-builder)
+  - [Setting up a new skill](#setting-up-a-new-skill)
+
 ## Requirements
 
 This version of the SDK works with Amazon Alexa skills that are built using the [ASK SDK v2 for Node.js](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs/tree/2.0.x/ask-sdk).
 
 Like the ASK SDK, the Jargon SDK is built using [TypeScript](https://www.typescriptlang.org/index.html),
-and includes typing information in the distribution package.
+and includes typing information in the distribution package (but you're under no obligation to use
+TypeScript to build your skill).
+
+Your Lambda function should be using the [nodejs8.10 runtime](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html),
+or a later version (when available).
 
 ## Core concepts
 
@@ -301,7 +325,31 @@ In your skill handlers access the Jargon reponse builder via one of the followin
 TypeScript users: you'll need to cast `handlerInput` to `JargonHandlerInput` if you want to use one of
 the first two forms.
 
+Feel free to move to the Jargon response builder incrementally; however, you shouldn't mix the use of
+the ASK response builder and the Jargon response builder in a single request due to the last-write-wins
+behavior of `speak()` and `reprompt()` in the ASK response builder.
+
 ## Setting up a new skill
 
-We'll soon have templates in place for use with the ASK CLI for bootstrapping new skills with
-the Jargon SDK pre-installed, along with skeletons for resource files.
+We've "Jargonized" some of the ASK starter templates to simplify creating a new skill. To make use of these templates:
+1. Install and setup the [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html
+   * If you've previously installed the CLI please make sure you're on the latest version by running `npm update -g ask-cli`
+   * If this is your first time using the CLI you'll need to first run `ask init` to configure everything
+2. Run `ask new --url https://s3.amazonaws.com/jargon-templates/ask-nodejs.json`
+3. Select the template you wish to use, and follow the prompts to complete configuring your new skill
+
+Please note that you'll receive a warning message that the template isn't from an official source; in order to create the skill from
+the template answer "yes" when prompted. The templates include the same hook scripts as the original Amazon templates; these scripts
+ensure that the necessary dependencies are installed (via npm) after creating a new project, and prior to deployment.
+
+If you know which template you'd like it use, in step 2 above you can directly provide its URL:
+* Hello World - https://github.com/JargonInc/skill-sample-nodejs-hello-world.git
+  * A minimal template showing basic skill functionality
+* Trivia - https://github.com/JargonInc/skill-sample-nodejs-trivia.git
+  * A more complex skill that stores session state, and makes use of the Jargon's SDK ability to render objects stored in resource files
+* Button Colorchanger - https://github.com/JargonInc/skill-sample-nodejs-buttons-colorchanger.git
+  * A skill that shows how to interact with Echo buttons, and compose complex responses
+
+Alternatively, you can clone the template repository instead of using the ASK CLI.
+
+Interested in seeing a template for a different use case? [File an issue!](https://github.com/JargonInc/jargon-sdk-nodejs/issues/new)
