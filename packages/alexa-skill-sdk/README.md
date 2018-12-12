@@ -332,7 +332,7 @@ behavior of `speak()` and `reprompt()` in the ASK response builder.
 ## Setting up a new skill
 
 We've "Jargonized" some of the ASK starter templates to simplify creating a new skill. To make use of these templates:
-1. Install and setup the [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html
+1. Install and setup the [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html)
    * If you've previously installed the CLI please make sure you're on the latest version by running `npm update -g ask-cli`
    * If this is your first time using the CLI you'll need to first run `ask init` to configure everything
 2. Run `ask new --url https://s3.amazonaws.com/jargon-templates/ask-nodejs.json`
@@ -342,7 +342,7 @@ Please note that you'll receive a warning message that the template isn't from a
 the template answer "yes" when prompted. The templates include the same hook scripts as the original Amazon templates; these scripts
 ensure that the necessary dependencies are installed (via npm) after creating a new project, and prior to deployment.
 
-If you know which template you'd like it use, in step 2 above you can directly provide its URL:
+If you know which template you'd like to use, in step 2 above you can directly provide its URL:
 * Hello World - https://github.com/JargonInc/skill-sample-nodejs-hello-world.git
   * A minimal template showing basic skill functionality
 * Trivia - https://github.com/JargonInc/skill-sample-nodejs-trivia.git
@@ -352,4 +352,4 @@ If you know which template you'd like it use, in step 2 above you can directly p
 
 Alternatively, you can clone the template repository instead of using the ASK CLI.
 
-Interested in seeing a template for a different use case? [File an issue!](https://github.com/JargonInc/jargon-sdk-nodejs/issues/new)
+Please [file an issue](https://github.com/JargonInc/jargon-sdk-nodejs/issues/new) if you're interested in seeing a template for a different use case.
