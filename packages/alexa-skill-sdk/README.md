@@ -352,4 +352,4 @@ If you know which template you'd like to use, in step 2 above you can directly p
 
 Alternatively, you can clone the template repository instead of using the ASK CLI.
 
-Please [file an issue](https://github.com/JargonInc/jargon-sdk-nodejs/issues/new) if you're interested in seeing a template for a different use case.
+Please [file an issue](https://github.com/JargonInc/jargon-sdk-nodejs/issues/new) if you're interested in seeing a template for a different use case, or contact us at [sdk@jargon.com](mailto:sdk@jargon.com) with any suggestions or feedback you might have.
