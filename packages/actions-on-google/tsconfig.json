@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": "lib",
+    "outDir" : "dist",
+    "sourceMap" : true,
+    "strict": true,
+    "alwaysStrict" : true,
+    "declaration" : true,
+    "downlevelIteration": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "lib": [
+      "es2017"
+    ]
+  },
+  "include": ["lib"]
+}

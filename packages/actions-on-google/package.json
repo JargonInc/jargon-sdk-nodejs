@@ -1,0 +1,57 @@
+{
+  "name": "@jargon/actions-on-google",
+  "version": "0.1",
+  "description": "The Jargon Actions on Google SDK makes it easy to manage the content of your Google Action",
+  "keywords": [
+    "Jargon",
+    "Google Action",
+    "Google Assistant",
+    "SDK"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "gulp": "./node_modules/.bin/gulp"
+  },
+  "author": "jargon.com",
+  "contributors": [
+    {
+      "name": "Jonathan Burstein",
+      "email": "jonathan@jargon.com"
+    }
+  ],
+  "homepage": "https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/actions-on-google#readme",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@jargon/sdk-core": "^1.0.9"
+  },
+  "peerDependencies": {
+    "actions-on-google": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.5",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.11.0",
+    "actions-on-google": "^2.5.0",
+    "chai": "^4.2.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "lerna": "^3.4.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JargonInc/jargon-sdk-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JargonInc/jargon-sdk-nodejs/issues"
+  }
+}
