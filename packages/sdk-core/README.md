@@ -72,13 +72,13 @@ You can determine which variation the was choses via the ResourceManager's selec
 
 ### Resource management and runtime rendering
 
-`ResourceManager` allows clients to access content resources stored in locale-specifc
+`ResourceManager` allows clients to access content resources stored in locale-specific
 files, and to render those resources at runtime, substituting parameters.
 
 A `ResourceManager` instance is meant to live only for the lifetime of a single request, and is bound
 to a specific locale. Instances are created via a `ResourceManagerFactory` instance, normally `DefaultResourceManagerFactory`.
 
-Resource files live in "resources" subdirectory of the process's runtime directory; this will soon be customizeable via
+Resource files live in "resources" subdirectory of the process's runtime directory; this will soon be customizable via
 `ResourceManagerOptions`.
 
 ## Runtime Interface
@@ -228,7 +228,7 @@ Defaults are specified in `DefaultRenderOptions`.
 
 ```typescript
 /**
- * Options control additional rendering behavior, overridding the
+ * Options control additional rendering behavior, overriding the
  * settings configured at the ResourceManager level.
  */
 export interface RenderOptions {

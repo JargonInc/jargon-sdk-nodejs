@@ -105,7 +105,7 @@ export interface RenderParams {
 }
 
 /**
- * Options control additional rendering behavior, overridding the
+ * Options control additional rendering behavior, overriding the
  * settings configured at the ResourceManager level.
  */
 export interface RenderOptions {

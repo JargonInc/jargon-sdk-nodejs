@@ -44,7 +44,7 @@ or screen content. It's important that these resources live outside of your skil
 make it possible to localize them into other languages.
 
 The Jargon SDK expects resource files to live in the "resources" subdirectory within your lambda
-code (i.e., skill_root/lambda/custom/resources). Each locale has a single resouce file, named for
+code (i.e., skill_root/lambda/custom/resources). Each locale has a single resource file, named for
 that locale (e.g., "en-US.json").
 
 Resource files are JSON, with a single top-level object (similar to package.json). The keys within that
@@ -117,14 +117,14 @@ parameters containing content presented to users to RenderItems (see below).
 By default the `speak` and `reprompt` methods replace the content from previous calls to those methods; this behavior mirrors
 that of corresponding ASK SDK methods. There are two ways to change this behavior such to multiple calls to result in content
 getting merged (with a space in between) instead of replaced:
-1. When constructing the `JargonSkillBuilder` (described below) pass in an options objeect with `mergeSpeakAndReprompt` set to true
+1. When constructing the `JargonSkillBuilder` (described below) pass in an options object with `mergeSpeakAndReprompt` set to true
 1. Set the `merge` parameter to the `speak` or `reprompt` method to true
 
 When `mergeSpeakAndReprompt` is true the default replace behavior can be used for specific calls to `speak` or `reprompt` by
 setting the `merge` parameter to false.
 
-Note that each indivdual call to `speak` or `reprompt` should contain content that can stand alone (e.g., a full sentence or
-paragraph) to minimize the chances that the order of the content would change across langauges.
+Note that each individual call to `speak` or `reprompt` should contain content that can stand alone (e.g., a full sentence or
+paragraph) to minimize the chances that the order of the content would change across languages.
 
 ```typescript
 export interface JargonResponseBuilder {
@@ -139,7 +139,7 @@ export interface JargonResponseBuilder {
   /**
    * Has alexa listen for speech from the user. If the user doesn't respond within 8 seconds
    * then has alexa reprompt with the provided reprompt speech
-   * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt conent
+   * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt content
    * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options
    * True merges the rendered content with previously rendered content; false replaces any previous content
    * @returns {ResponseBuilder}
@@ -227,7 +227,7 @@ interface RenderOptions {
 ```
 
 ### JargonSkillBuilder
-`JargonSkillBuilder` wraps the ASK skill builder, and handles all details of intializing the Jargon SDK,
+`JargonSkillBuilder` wraps the ASK skill builder, and handles all details of initializing the Jargon SDK,
 installing request and response interceptors, and so on.
 ```javascript
 const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
@@ -316,7 +316,7 @@ Resource files go under skill_root/lambda/custom/resources, and are named by the
 content for (e.g., "en-US.json").
 
 ### Switch over to the Jargon response builder
-In your skill handlers access the Jargon reponse builder via one of the following methods:
+In your skill handlers access the Jargon response builder via one of the following methods:
 * `handlerInput.jrb`
 * `handlerInput.jargonResponseBuilder`
 * `handlerInput.attributesManager.getRequestAttributes().jrb`

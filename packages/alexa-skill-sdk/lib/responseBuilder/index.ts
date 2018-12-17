@@ -34,7 +34,7 @@ export interface JargonResponseBuilder {
   /**
    * Has alexa listen for speech from the user. If the user doesn't respond within 8 seconds
    * then has alexa reprompt with the provided reprompt speech
-   * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt conent
+   * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt content
    * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options
    * True merges the rendered content with previously rendered content; false replaces any previous content
    * @returns {ResponseBuilder}

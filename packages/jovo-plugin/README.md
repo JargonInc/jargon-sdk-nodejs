@@ -12,11 +12,11 @@ Jargon's Jovo plugin works with version 1.4 and later of the [Jovo Framework](ht
 
 ### Content resources and resource files
 Content resources define the text that your Jovo application outputs to users, via the devices voice,
-card content, or screen content. It's important that these resources live outside of your applications's
+card content, or screen content. It's important that these resources live outside of your application's
 source code to make it possible to localize them into other languages.
 
 The Jargon SDK expects resource files to live in the "resources" subdirectory within your Jovo
-code. Each locale has a single resouce file, named for that locale (e.g., "en-US.json").
+code. Each locale has a single resource file, named for that locale (e.g., "en-US.json").
 
 Resource files are JSON, with a single top-level object (similar to package.json). The keys within that
 object are the identifiers you'll use to refer to specific resources within your source code. Nested objects
