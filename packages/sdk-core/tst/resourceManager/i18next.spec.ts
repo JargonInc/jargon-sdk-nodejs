@@ -196,8 +196,11 @@ it('returns selected variations when nested render items are present', async () 
 
 it('uses internal resources', async () => {
   let s = await rm.render(ri('Jargon.unhandledResponse'))
-  expect(s).to.be.oneOf(['Sorry, I didn\'t get that. Can you say it again?',
-    'I\'m sorry, I didn\'t understand.  Can you rephrase that?'])
+  expect(s).to.be.oneOf(['I couldn\'t understand that. Could you repeat that?',
+        'I\'m sorry, I didn\'t understand. Can you rephrase that?',
+        'I\'m afraid I don\'t know what you mean. Please say that again.',
+        'I\'m sorry, but I did not understand your response.',
+        'Sorry, I missed that. Could you say it again?'])
 })
 
 it('respects override of internal resources', async () => {

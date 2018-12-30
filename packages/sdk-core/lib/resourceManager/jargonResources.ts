@@ -15,8 +15,11 @@ export const JargonResources = {
   "en": {
     "Jargon": {
       "unhandledResponse": {
-        "v1": "Sorry, I didn't get that. Can you say it again?",
-        "v2": "I'm sorry, I didn't understand.  Can you rephrase that?"
+        "v1": "I couldn't understand that. Could you repeat that?",
+        "v2": "I'm sorry, I didn't understand. Can you rephrase that?",
+        "v3": "I'm afraid I don't know what you mean. Please say that again.",
+        "v4": "I'm sorry, but I did not understand your response.",
+        "v5": "Sorry, I missed that. Could you say it again?"
       },
       "defaultReprompt": {
         "v1": "What else can I help you with?",
