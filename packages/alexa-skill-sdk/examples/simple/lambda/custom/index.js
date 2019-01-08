@@ -97,7 +97,7 @@ const ErrorHandler = {
   },
 };
 
-const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom());
+const skillBuilder = new Jargon.JargonSkillBuilder().installOnto(Alexa.SkillBuilders.custom());
 
 exports.handler = skillBuilder
   .addRequestHandlers(

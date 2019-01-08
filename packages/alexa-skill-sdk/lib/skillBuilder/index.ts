@@ -24,17 +24,38 @@ export const DefaultSkillBuilderOptions: Required<SkillBuilderOptions> = {
   ...DefaultJargonResponseBuilderOptions
 }
 
+/**
+ * JargonSkillBuilder installs itself onto an ASK SkillBuilder. Under the covers it creates
+ * a Jargon ResourceManager, and installs interceptors on the base skill builder that handle
+ * augmenting the ASK request objects with Jargon's additions (such as JargonResponseBuilder)
+ */
 export class JargonSkillBuilder {
   private _options: Required<SkillBuilderOptions>
   private _rmf: ResourceManagerFactory
 
+  /**
+   * Constructs a new JargonSkillBuilder
+   * @param opts Options for the skill builder; defaults to an empty object
+   */
   constructor (opts: SkillBuilderOptions = {}) {
     this._options = Object.assign({}, DefaultSkillBuilderOptions, opts)
     this._rmf = new DefaultResourceManagerFactory(this._options)
   }
 
-  wrap <T extends BaseSkillBuilder> (base: T): T {
+  /**
+   * Installs onto a base ASK skill builder
+   * @param base The base ASK skill builder
+   */
+  installOnto <T extends BaseSkillBuilder> (base: T): T {
     base.addRequestInterceptors(new JargonRequestInterceptor(this._rmf, this._options))
     return base
+  }
+
+  /**
+   * @deprecated Use installOnto instead
+   * @param base The base ASK skill builder
+   */
+  wrap <T extends BaseSkillBuilder> (base: T): T {
+    return this.installOnto(base)
   }
 }

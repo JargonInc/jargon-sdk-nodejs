@@ -227,10 +227,10 @@ interface RenderOptions {
 ```
 
 ### JargonSkillBuilder
-`JargonSkillBuilder` wraps the ASK skill builder, and handles all details of initializing the Jargon SDK,
+`JargonSkillBuilder` installs onto the ASK skill builder, and handles all details of initializing the Jargon SDK,
 installing request and response interceptors, and so on.
 ```javascript
-const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
+const skillBuilder = new Jargon.JargonSkillBuilder().installOnto(Alexa.SkillBuilders.custom())
 ```
 
 ### ResourceManager
@@ -298,13 +298,13 @@ First add the Jargon SDK as a dependency of your lambda code (skill_root/lambda/
   * npm i --save @jargon/alexa-skill-sdk
   * yarn add @jargon/alexa-skill-sdk
 
-Next, wrap the Alexa skill builder with Jargon's skill builder:
+Next, install Jargon's skill builder onto the Alexa skill builder:
 ```javascript
 // Import the Jargon SDK
 const Jargon = require('@jargon/alexa-skill-sdk')
 
-// Wrap the skill builder
-const skillBuilder = new Jargon.JargonSkillBuilder().wrap(Alexa.SkillBuilders.custom())
+// Installation
+const skillBuilder = new Jargon.JargonSkillBuilder().installOnto(Alexa.SkillBuilders.custom())
 ```
 
 ### Externalize resources
