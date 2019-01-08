@@ -1,3 +1,9 @@
+### 1.1.3
+Rename JargonSkillBuilder.wrap() to installOnto(), to more clearly convey what's taking place.
+
+JargonSkillBuilder.wrap() is marked as deprecated, but will remain present until at least major
+version 3.
+
 ### 1.1.2
 Fix bug with JargonSkillBuilder not passing options down to the request interceptor
 
