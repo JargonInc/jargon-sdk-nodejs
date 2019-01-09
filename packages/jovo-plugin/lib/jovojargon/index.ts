@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Jargon, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2019 Jargon, Inc. or its affiliates. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
@@ -12,6 +12,7 @@
  */
 
 import { RenderItem, ResourceManager } from '@jargon/sdk-core'
+import { Jovo } from 'jovo-core'
 
 /**
  * JovoJargon contains Jargon's additions to the core Jovo framework
@@ -50,7 +51,7 @@ export interface JovoJargon {
 }
 
 export class JJ implements JovoJargon {
-  constructor (private jovo: any, public rm: ResourceManager) {}
+  constructor (private jovo: Jovo, public rm: ResourceManager) {}
 
   async tell (speech: RenderItem): Promise<void> {
     let s = await this.rm.render(speech)

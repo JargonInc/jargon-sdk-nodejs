@@ -1,6 +1,6 @@
 {
   "name": "@jargon/jovo-plugin",
-  "version": "1.0.8",
+  "version": "2.0.0",
   "description": "A Jovo Framework plugin for the Jargon SDK",
   "keywords": [
     "Jargon",
@@ -31,7 +31,7 @@
     "@jargon/sdk-core": "^1.0.9"
   },
   "peerDependencies": {
-    "jovo-framework": "^1.4.12"
+    "jovo-core": "^2.0.4"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -40,7 +40,9 @@
     "chai": "^4.2.0",
     "del": "^3.0.0",
     "gulp": "^4.0.0",
-    "jovo-framework": "^1.4.12",
+    "jovo-core": "^2.0.4",
+    "jovo-framework": "^2.0.5",
+    "jovo-platform-alexa": "^2.0.6",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "ts-node": "^7.0.1",

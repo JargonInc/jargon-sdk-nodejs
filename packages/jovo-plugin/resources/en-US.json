@@ -2,14 +2,15 @@
   "hwi":{
     "ask":{
       "v1":"Hello from Jargon! What's your name?",
-      "v2":"Thanks for using Jargon! Could you tell me your name?"
+      "v2":"Thanks for using Jargon! Could you tell me your name?",
+      "v3":"Who are you?",
+      "v4":"What's your name?"
     },
     "reprompt":{
       "v1":"Please tell me your name.",
       "v2":"Could you tell me your name?",
       "v3":"My name is Alexa. What's yours?",
       "v4":"I'd really like to know your name. What is it?"
-
     }
   },
   "mnii":{

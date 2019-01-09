@@ -6,7 +6,9 @@ multiple languages from within their skill.
 Need help localizing your skills to new languages and locales? Contact Jargon at localization@jargon.com.
 
 ## Requirements
-Jargon's Jovo plugin works with version 1.4 and later of the [Jovo Framework](https://www.jovo.tech/).
+Jargon's Jovo plugin works with version 2.0 and later of the [Jovo Framework](https://www.jovo.tech/).
+
+Version 1.x of the Jargon plugin works with Jovo v1 (1.4 and later).
 
 ## Core Concepts
 
@@ -82,16 +84,16 @@ You can determine which variation the SDK chose via the ResourceManager's select
 ## Runtime interface
 
 ### Jargon plugin
-After creating the Jovo application (which normally takes place in app/app.js) instantiate the Jargon plugin
+After creating the Jovo application (which normally takes place in src/app.js) instantiate the Jargon plugin
 and register it wil the application:
 
 ```javascript
 const { JargonPlugin } = require('@jargon/jovo-plugin')
-app.register("Jargon", new JargonPlugin())
+app.use(new JargonPlugin())
 ```
 
-The Jargon plugin installs an event handler that runs for every requests. That event handler adds a
-`JovoJargon` object to the `jovo` object that's passed to your intent handlers.
+The Jargon plugin installs middleware that runs for every requests. That middleware adds a
+`JovoJargon` object to the `jovo` object that's passed to your intent handlers (as `this`).
 
 ### JovoJargon
 
@@ -166,7 +168,7 @@ The `ri` helper function simplifies constructing a `RenderItem`:
 ```typescript
 function ri (key: string, params?: RenderParams, options?: RenderOptions): RenderItem
 
-handlerInput.jrb.speak(ri('sayHello', { 'name': 'World' }))
+this.jargon.tell(ri('sayHello', { 'name': 'World' }))
 ```
 
 `RenderOptions` allows fine-grained control of rendering behavior for a specific call, overriding
