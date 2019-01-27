@@ -1,3 +1,12 @@
+### 1.1.0
+Add built-in resources for common scenarios. These resources are available using the `RenderItem` keys:
+* `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
+* `Jargon.defaultReprompt` -- provides a generic reprompt
+
+A customer-provided definition for these resource keys is used in preference to the built-in resources.
+
+Currently the SDK includes variants of these resources for English, with other languages coming soon.
+
 ### 1.0.9
 Fix bad release
 

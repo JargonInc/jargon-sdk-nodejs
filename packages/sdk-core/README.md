@@ -83,11 +83,13 @@ Resource files live in "resources" subdirectory of the process's runtime directo
 
 ### Built-in Resources
 
-This SDK includes default variations for some common responses.  Specifically, it includes resources for
-* `Jargon.unhandledResponse` can be used to provide a response when you can't otherwise process an intent
-* `Jargon.defaultReprompt` can be used as a generic reprompt for the user
+This SDK includes default responses for some common scenarios. These responses are available using the following `RenderItem` keys:
+* `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
+* `Jargon.defaultReprompt` -- provides a generic reprompt
 
-You can render these resources as you would any of your own, as described in the following section.  You can also define your own version of any of these strings in your resource file to override the default behavior.
+You can render these resources as you would any of your own, as described in the following section. You can also define your own version for these keys in your resource file to override the Jargon-provided responses.
+
+Currently the SDK includes variants of these resources for English, with other languages coming soon.
 
 ## Runtime Interface
 
