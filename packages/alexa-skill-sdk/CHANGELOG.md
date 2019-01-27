@@ -1,3 +1,12 @@
+### 1.1.4
+Bump sdk-core dependency to 1.1.0 to take of advantage of its new built-in resources for common scenarios. These resources are available using the `RenderItem` keys:
+* `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
+* `Jargon.defaultReprompt` -- provides a generic reprompt
+
+A customer-provided definition for these resource keys is used in preference to the built-in resources.
+
+Currently the SDK includes variants of these resources for English, with other languages coming soon.
+
 ### 1.1.3
 Rename JargonSkillBuilder.wrap() to installOnto(), to more clearly convey what's taking place.
 
@@ -16,7 +25,7 @@ By default the `speak` and `reprompt` methods replace the content from previous 
 that of corresponding ASK SDK methods. There are two ways to change this behavior such to multiple calls to result in content
 getting merged (with a space in between) instead of replaced:
 1. When constructing the `JargonSkillBuilder` pass in an options object with `mergeSpeakAndReprompt` set to true
-1. Set the `merge` parameter to the `speak` or `reprompt` method to true
+2. Set the `merge` parameter to the `speak` or `reprompt` method to true
 
 When `mergeSpeakAndReprompt` is true the default replace behavior can be used for specific calls to `speak` or `reprompt` by
 setting the `merge` parameter to false.

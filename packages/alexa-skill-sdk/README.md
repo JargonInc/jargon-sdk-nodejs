@@ -19,6 +19,7 @@ Need help localizing your skills to new languages and locales? Contact Jargon at
     - [RenderItem](#renderitem)
     - [JargonSkillBuilder](#jargonskillbuilder)
     - [ResourceManager](#resourcemanager)
+    - [Built-in Resources](#built-in-resources)
   - [Adding to an existing skill](#adding-to-an-existing-skill)
     - [Installation](#installation)
     - [Externalize resources](#externalize-resources)
@@ -290,6 +291,16 @@ Note that the render routines return `Promise`s to the rendered content, not the
 
 `ResourceManager` is part of the package [@jargon/sdk-core](https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/sdk-core),
 and can be used directly from code that isn't based on ASKv2.
+
+### Built-in Resources
+
+This SDK includes default responses for some common scenarios. These responses are available using the following `RenderItem` keys:
+* `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
+* `Jargon.defaultReprompt` -- provides a generic reprompt
+
+You can render these resources as you would any of your own. You can also define your own version for these keys in your resource file to override the Jargon-provided responses.
+
+Currently the SDK includes variants of these resources for English, with other languages coming soon.
 
 ## Adding to an existing skill
 
