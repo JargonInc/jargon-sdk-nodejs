@@ -206,6 +206,57 @@ it('returns selected variations when nested render items are present', async () 
   expect(s).equals(rendered)
 })
 
+it('uses internal resources', async () => {
+  let s = await rm.render(ri('Jargon.unhandledResponse'))
+  expect(s).to.be.oneOf(['I couldn\'t understand that. Could you repeat that?',
+        'I\'m sorry, I didn\'t understand. Can you rephrase that?',
+        'I\'m afraid I don\'t know what you mean. Please say that again.',
+        'I\'m sorry, but I did not understand your response.',
+        'Sorry, I missed that. Could you say it again?'])
+})
+
+it('respects override of internal resources', async () => {
+  let rm = rf.forLocale('en-GB')
+  let s = await rm.render(ri('Jargon.unhandledResponse'))
+  expect(s).equals('My own response')
+
+  s = await rm.render(ri('Jargon.defaultReprompt'))
+  expect(s).to.be.oneOf(['What else can I help you with?',
+    'How else can I help you?'])
+})
+
+it('understands internal resources of different locales', async () => {
+  let testResources = {
+    "en-US": {
+      "Jargon": {
+        "defaultReprompt": "An American reprompt"
+      }
+    },
+    "en-GB": {
+      "Jargon": {
+        "defaultReprompt": "A British reprompt"
+      }
+    },
+    "de": {
+      "Jargon": {
+        "defaultReprompt": "A German reprompt"
+      }
+    }
+  }
+  let rf = new I18NextResourceManagerFactory({}, testResources)
+  let rm = rf.forLocale('en-US')
+  let s = await rm.render(ri('Jargon.defaultReprompt'))
+  expect(s).equals('An American reprompt')
+
+  rm = rf.forLocale('en-GB')
+  s = await rm.render(ri('Jargon.defaultReprompt'))
+  expect(s).equals('A British reprompt')
+
+  rm = rf.forLocale('de-DE')
+  s = await rm.render(ri('Jargon.defaultReprompt'))
+  expect(s).equals('A German reprompt')
+})
+
 async function checkVariations (rm: ResourceManager, item: RenderItem) {
   let i = 0
   let previous = await rm.render(item)

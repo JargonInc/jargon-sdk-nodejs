@@ -81,6 +81,14 @@ to a specific locale. Instances are created via a `ResourceManagerFactory` insta
 Resource files live in "resources" subdirectory of the process's runtime directory; this will soon be customizable via
 `ResourceManagerOptions`.
 
+### Built-in Resources
+
+This SDK includes default variations for some common responses.  Specifically, it includes resources for
+* `Jargon.unhandledResponse` can be used to provide a response when you can't otherwise process an intent
+* `Jargon.defaultReprompt` can be used as a generic reprompt for the user
+
+You can render these resources as you would any of your own, as described in the following section.  You can also define your own version of any of these strings in your resource file to override the default behavior.
+
 ## Runtime Interface
 
 ### RenderItem

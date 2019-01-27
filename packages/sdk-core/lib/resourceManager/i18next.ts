@@ -15,6 +15,7 @@ import * as i18n from 'i18next'
 // @ts-ignore Types not available
 import * as syncBackend from 'i18next-sync-fs-backend'
 import { ICU } from './icuFormat'
+import { JargonResources } from './jargonResources'
 
 import { DefaultResourceManagerOptions, RenderItem, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions, SelectedVariation, RenderParams } from '.'
 
@@ -117,8 +118,14 @@ export class I18NextResourceManager implements ResourceManager {
 
 export class I18NextResourceManagerFactory implements ResourceManagerFactory {
   private _opts: Required<ResourceManagerOptions>
-  constructor (options: ResourceManagerOptions) {
+  constructor (options: ResourceManagerOptions, appendedResources: any = JargonResources) {
     this._opts = Object.assign({}, DefaultResourceManagerOptions, options)
+    let lang: any
+    for (lang in appendedResources) {
+      if (this._opts.localesToPreload.indexOf(lang) === -1) {
+        this._opts.localesToPreload.push(lang)
+      }
+    }
 
     this.baseTranslator = i18n
       .use(syncBackend)
@@ -133,13 +140,16 @@ export class I18NextResourceManagerFactory implements ResourceManagerFactory {
         preload: this._opts.localesToPreload,
         returnObjects: true
       })
+
+    for (lang in appendedResources) {
+      this.baseTranslator.addResourceBundle(lang, 'translation', appendedResources[lang], true, false)
+    }
   }
 
   public forLocale (locale: string): ResourceManager {
     let ii = this.baseTranslator.cloneInstance().init({
       lng: locale
     })
-
     return new I18NextResourceManager(ii, locale, this._opts)
   }
 
