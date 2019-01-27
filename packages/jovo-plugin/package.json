@@ -1,6 +1,6 @@
 {
   "name": "@jargon/jovo-plugin",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A Jovo Framework plugin for the Jargon SDK",
   "keywords": [
     "Jargon",
@@ -28,7 +28,7 @@
     "url": "https://github.com/JargonInc/jargon-sdk-nodejs/issues"
   },
   "dependencies": {
-    "@jargon/sdk-core": "^1.0.9"
+    "@jargon/sdk-core": "^1.1.0"
   },
   "peerDependencies": {
     "jovo-core": "^2.0.4"
