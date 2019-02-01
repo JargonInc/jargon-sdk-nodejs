@@ -23,7 +23,7 @@ and includes typing information in the distribution package.
 ## Core concepts
 
 ### Content resources and resource files
-Content resources define the text that your action outputs to users, via Alexa's voice, card content,
+Content resources define the text that your action outputs to users, via Google Assistant's voice, card content,
 or screen content. It's important that these resources live outside of your action's source code to
 make it possible to localize them into other languages.
 
