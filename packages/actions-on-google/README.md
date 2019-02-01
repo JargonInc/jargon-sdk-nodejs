@@ -1,9 +1,9 @@
 # Jargon SDK for Google Assistant Actions (nodejs)
 
-The Jargon SDK makes it easy for skill developers to manage their runtime content, and to support
-multiple languages from within their skill.
+The Jargon SDK makes it easy for action developers to manage their runtime content, and to support
+multiple languages from within their action.
 
-Need help localizing your skills to new languages and locales? Contact Jargon at localization@jargon.com.
+Need help localizing your actions to new languages and locales? Contact Jargon at localization@jargon.com.
 
 ## Requirements
 
@@ -17,19 +17,18 @@ The Jargon SDK makes use of Javascript features supported by Node version 8 and 
   }
 ```
 
-Like the Actions on Goolge support library, the Jargon SDK is built using [TypeScript](https://www.typescriptlang.org/index.html),
+Like the Actions on Google support library, the Jargon SDK is built using [TypeScript](https://www.typescriptlang.org/index.html),
 and includes typing information in the distribution package.
 
 ## Core concepts
 
 ### Content resources and resource files
-Content resources define the text that your skill outputs to users, via Alexa's voice, card content,
-or screen content. It's important that these resources live outside of your skill's source code to
+Content resources define the text that your action outputs to users, via Alexa's voice, card content,
+or screen content. It's important that these resources live outside of your action's source code to
 make it possible to localize them into other languages.
 
-The Jargon SDK expects resource files to live in the "resources" subdirectory within your lambda
-code (i.e., skill_root/lambda/custom/resources). Each locale has a single resouce file, named for
-that locale (e.g., "en-US.json").
+The Jargon SDK expects resource files to live in the "resources" subdirectory within your fulfillment
+code. Each locale has a single resource file, named for that locale (e.g., "en-US.json").
 
 Resource files are JSON, with a single top-level object (similar to package.json). The keys within that
 object are the identifiers you'll use to refer to specific resources within your source code. Nested objects
@@ -72,7 +71,7 @@ alternative forms to handle things like pluralization and gender.
 ```
 
 ### Variations
-It's important for Alexa skills to vary the words they use in response to users, lest they sound robotic. The Jargon SDK
+It's important for Google Assistant Actions to vary the words they use in response to users, lest they sound robotic. The Jargon SDK
 makes ths simple with built-in variation support. Variations are defined using nested objects:
 ```json
 {
@@ -155,7 +154,7 @@ export interface Conversation<TUserStorage> {
 }
 ```
 
-Intializing the Jargon SDK is simple:
+Initializing the Jargon SDK is simple:
 
 ```javascript
 const { JargonDialogflowApp } = require('@jargon/actions-on-google')

@@ -1,3 +1,6 @@
+### 0.3.1
+Readme updates only; no functionality changes
+
 ### 0.3.0
 Bump sdk-core dependency to 1.1.0 to take of advantage of its new built-in resources for common scenarios. These resources are available using the `RenderItem` keys:
 * `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
