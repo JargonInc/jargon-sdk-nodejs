@@ -11,11 +11,8 @@
  * permissions and limitations under the License.
  */
 
-// Make sure tsc can see our changes to IVoxaEvent
-import '../lib/plugin'
-
 import { expect } from 'chai'
-import { DefaultResourceManagerFactory } from '../lib/'
+import { DefaultResourceManagerFactory, ri } from '../lib/'
 import { JargonRenderer } from '../lib/renderer'
 import { IVoxaEvent, AlexaEvent } from 'voxa'
 import { AlexaRequestBuilder } from './tools'
@@ -110,11 +107,11 @@ it('Correctly passes the voxa event to variables when rendering', async () => {
   expect(s).equals(`basicParam: ${id}`)
 })
 
-it('Only calls the variable functions if present in the resource', async () => {
+it('Correctly handles nested render items via variables', async () => {
   const param = 'param'
   const vars = {
-    basicParam: () => param,
-    pluralParam: () => { throw new Error('Unexpected call to pluralParam') }
+    basicParam: () => ri('sub', { param }),
+    pluralParam: () => 2
   }
   const r = renderer(vars)
   const s = await r.renderPath('basicParam', makeEvent())

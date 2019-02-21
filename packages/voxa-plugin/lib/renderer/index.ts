@@ -40,6 +40,7 @@ export class JargonRenderer extends Renderer {
       if (!params[v]) {
         const f = this._vars[v]
         Object.defineProperty(params, v, {
+          enumerable: true,
           get: () => f(voxaEvent)
         })
       }
