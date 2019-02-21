@@ -1,0 +1,5 @@
+{
+  "basicParam":"de basic param: {basicParam}",
+  "pluralParam":"{pluralParam, plural, =0 {de zero} =1 {de One {basicParam}} other {de #}}",
+  "simple":"de simple"
+}

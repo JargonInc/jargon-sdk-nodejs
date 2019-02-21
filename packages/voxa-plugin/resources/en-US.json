@@ -1,0 +1,6 @@
+{
+  "basicParam":"basicParam: {basicParam}",
+  "pluralParam":"{pluralParam, plural, =0 {zero} =1 {One {basicParam}} other {#}}",
+  "simple":"simple",
+  "SimpleIntent":"A simple response"
+}

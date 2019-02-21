@@ -1,0 +1,53 @@
+{
+  "name": "@jargon/voxa-plugin",
+  "version": "0.0.1",
+  "description": "A Voxa plugin for the Jargon SDK",
+  "keywords": [
+    "Jargon",
+    "Voxa"
+  ],
+  "homepage": "https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/voxa-plugin#readme",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "gulp": "./node_modules/.bin/gulp"
+  },
+  "author": "jargon.com",
+  "contributors": [
+    {
+      "name": "Jonathan Burstein",
+      "email": "jonathan@jargon.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JargonInc/jargon-sdk-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JargonInc/jargon-sdk-nodejs/issues"
+  },
+  "dependencies": {
+    "@jargon/sdk-core": "^1.1.0"
+  },
+  "peerDependencies": {
+    "voxa": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/lodash": "^4.14.121",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.1",
+    "chai": "^4.2.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "lodash": "^4.17.11",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.1.5",
+    "voxa": "^3.0.0"
+  }
+}
