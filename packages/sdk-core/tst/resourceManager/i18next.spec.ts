@@ -101,6 +101,16 @@ it('returns the rendered object', async () => {
   expect(obj.arr).to.have.members([1, 2, 3, 4, 5])
 })
 
+it('returns the rendered object with nested render items', async () => {
+  let item = ri('object', { name: ri('wordifier', { bird: 'Tweety' }), num: 7 })
+  let obj: any = await rm.renderObject(item)
+  expect(obj.boolVal).to.be.true
+  expect(obj.numVal).equals(32)
+  expect(obj.greeter).equals('Hello Tweety is the word')
+  expect(obj.child.grandchild.numString).equals('7')
+  expect(obj.arr).to.have.members([1, 2, 3, 4, 5])
+})
+
 it('returns the rendered array', async () => {
   let item = ri('arrayWithVars', { a: 1, b: 'second' })
   let arr: any = await rm.renderObject(item)
@@ -209,10 +219,10 @@ it('returns selected variations when nested render items are present', async () 
 it('uses internal resources', async () => {
   let s = await rm.render(ri('Jargon.unhandledResponse'))
   expect(s).to.be.oneOf(['I couldn\'t understand that. Could you repeat that?',
-        'I\'m sorry, I didn\'t understand. Can you rephrase that?',
-        'I\'m afraid I don\'t know what you mean. Please say that again.',
-        'I\'m sorry, but I did not understand your response.',
-        'Sorry, I missed that. Could you say it again?'])
+    'I\'m sorry, I didn\'t understand. Can you rephrase that?',
+    'I\'m afraid I don\'t know what you mean. Please say that again.',
+    'I\'m sorry, but I did not understand your response.',
+    'Sorry, I missed that. Could you say it again?'])
 })
 
 it('respects override of internal resources', async () => {
@@ -227,19 +237,19 @@ it('respects override of internal resources', async () => {
 
 it('understands internal resources of different locales', async () => {
   let testResources = {
-    "en-US": {
-      "Jargon": {
-        "defaultReprompt": "An American reprompt"
+    'en-US': {
+      'Jargon': {
+        'defaultReprompt': 'An American reprompt'
       }
     },
-    "en-GB": {
-      "Jargon": {
-        "defaultReprompt": "A British reprompt"
+    'en-GB': {
+      'Jargon': {
+        'defaultReprompt': 'A British reprompt'
       }
     },
-    "de": {
-      "Jargon": {
-        "defaultReprompt": "A German reprompt"
+    'de': {
+      'Jargon': {
+        'defaultReprompt': 'A German reprompt'
       }
     }
   }

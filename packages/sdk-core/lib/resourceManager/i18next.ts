@@ -42,6 +42,7 @@ export class I18NextResourceManager implements ResourceManager {
       if (typeof v !== 'string') {
         return Promise.reject(new Error(`Unexpected type ${typeof v} for item key ${fk}`))
       }
+
       if (this._opts.trackSelectedVariations) {
         let sv: SelectedVariation = {
           item: item,
@@ -65,8 +66,13 @@ export class I18NextResourceManager implements ResourceManager {
     return Promise.all(ps)
   }
 
-  public renderObject<T> (item: RenderItem): Promise<T> {
-    let obj = this._translator.t(item.key, item.params)
+  public async renderObject<T> (item: RenderItem): Promise<T> {
+    let params = item.params
+    if (params) {
+      params = await this.processParams(params)
+    }
+
+    let obj = this._translator.t(item.key, params)
     let t = typeof obj
     if (t === 'object' || t === 'string' || t === 'boolean' || t === 'number') {
       return Promise.resolve(obj)
