@@ -15,7 +15,7 @@ const mergeOptions: JargonResponseBuilderOptions = {
 
 const needsEscapingResult = 'foo &amp; bar'
 const helloResult = 'world'
-const mregedHelloResult = `${helloResult} ${helloResult}`
+const mergedHelloResult = `${helloResult} ${helloResult}`
 
 it('includes the escaped speak output in the response', async () => {
   let jrb = new JRB(responseFactory, resourceManager)
@@ -45,27 +45,37 @@ it('does not merge speak content by default', async () => {
   validateOutputSpeech(os, helloResult)
 })
 
-it('merges speak content based on parameter', async () => {
+it('merges speak content based on boolean parameter', async () => {
   let jrb = new JRB(responseFactory, resourceManager)
   jrb.speak(ri('hello'))
   jrb.speak(ri('hello'), true)
 
   let response = await jrb.getResponse()
   let os = response.outputSpeech!
-  validateOutputSpeech(os, mregedHelloResult)
+  validateOutputSpeech(os, mergedHelloResult)
 })
 
-it('merges speak content based on options', async () => {
-  let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
+it('merges speak content based on options parameter', async () => {
+  let jrb = new JRB(responseFactory, resourceManager)
   jrb.speak(ri('hello'))
-  jrb.speak(ri('hello'), true)
+  jrb.speak(ri('hello'), { merge: true })
 
   let response = await jrb.getResponse()
   let os = response.outputSpeech!
-  validateOutputSpeech(os, mregedHelloResult)
+  validateOutputSpeech(os, mergedHelloResult)
 })
 
-it('does not merge speak content due to parameter override', async () => {
+it('merges speak content based on response builder options', async () => {
+  let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
+  jrb.speak(ri('hello'))
+  jrb.speak(ri('hello'), { playBehavior: 'ENQUEUE' })
+
+  let response = await jrb.getResponse()
+  let os = response.outputSpeech!
+  validateOutputSpeech(os, mergedHelloResult, 'ENQUEUE')
+})
+
+it('does not merge speak content due to boolean parameter override', async () => {
   let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
   jrb.speak(ri('hello'))
   jrb.speak(ri('hello'), false)
@@ -75,39 +85,59 @@ it('does not merge speak content due to parameter override', async () => {
   validateOutputSpeech(os, helloResult)
 })
 
-it('does not merge reprompt content by default', async () => {
-  let jrb = new JRB(responseFactory, resourceManager)
-  jrb.reprompt(ri('hello'))
-  jrb.reprompt(ri('hello'))
+it('does not merge speak content due to options parameter override', async () => {
+  let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
+  jrb.speak(ri('hello'))
+  jrb.speak(ri('hello'), { merge: false })
 
   let response = await jrb.getResponse()
-  let os = response.reprompt!.outputSpeech
+  let os = response.outputSpeech!
   validateOutputSpeech(os, helloResult)
 })
 
-it('merges reprompt content based on parameter', async () => {
+it('does not merge reprompt content by default', async () => {
+  let jrb = new JRB(responseFactory, resourceManager)
+  jrb.reprompt(ri('hello'), { playBehavior: 'REPLACE_ALL' })
+  jrb.reprompt(ri('hello'), { playBehavior: 'ENQUEUE' })
+
+  let response = await jrb.getResponse()
+  let os = response.reprompt!.outputSpeech
+  validateOutputSpeech(os, helloResult, 'ENQUEUE')
+})
+
+it('merges reprompt content based on boolean parameter', async () => {
   let jrb = new JRB(responseFactory, resourceManager)
   jrb.reprompt(ri('hello'))
   jrb.reprompt(ri('hello'), true)
 
   let response = await jrb.getResponse()
   let os = response.reprompt!.outputSpeech
-  validateOutputSpeech(os, mregedHelloResult)
+  validateOutputSpeech(os, mergedHelloResult)
 })
 
-it('merges reprompt content based on options', async () => {
-  let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
+it('merges reprompt content based on options parameter', async () => {
+  let jrb = new JRB(responseFactory, resourceManager)
   jrb.reprompt(ri('hello'))
-  jrb.reprompt(ri('hello'), true)
+  jrb.reprompt(ri('hello'), { merge: true })
 
   let response = await jrb.getResponse()
   let os = response.reprompt!.outputSpeech
-  validateOutputSpeech(os, mregedHelloResult)
+  validateOutputSpeech(os, mergedHelloResult)
 })
 
-it('does not merge reprompt content due to parameter override', async () => {
+it('merges reprompt content based on response builder options', async () => {
   let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
-  jrb.reprompt(ri('hello'))
+  jrb.reprompt(ri('hello'), { playBehavior: 'REPLACE_ALL' })
+  jrb.reprompt(ri('hello'), { playBehavior: 'ENQUEUE' })
+
+  let response = await jrb.getResponse()
+  let os = response.reprompt!.outputSpeech
+  validateOutputSpeech(os, mergedHelloResult, 'REPLACE_ALL')
+})
+
+it('does not merge reprompt content due to boolean parameter override', async () => {
+  let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
+  jrb.reprompt(ri('hello'), { playBehavior: 'REPLACE_ALL' })
   jrb.reprompt(ri('hello'), false)
 
   let response = await jrb.getResponse()
@@ -115,8 +145,19 @@ it('does not merge reprompt content due to parameter override', async () => {
   validateOutputSpeech(os, helloResult)
 })
 
-function validateOutputSpeech (os: ui.OutputSpeech, text: string) {
+it('does not merge reprompt content due to options parameter override', async () => {
+  let jrb = new JRB(responseFactory, resourceManager, mergeOptions)
+  jrb.reprompt(ri('hello'))
+  jrb.reprompt(ri('hello'), { merge: false, playBehavior: 'ENQUEUE' })
+
+  let response = await jrb.getResponse()
+  let os = response.reprompt!.outputSpeech
+  validateOutputSpeech(os, helloResult, 'ENQUEUE')
+})
+
+function validateOutputSpeech (os: ui.OutputSpeech, text: string, playBehavior?: ui.PlayBehavior) {
   expect(os.type).equals('SSML')
   let ssml = os as SsmlOutputSpeech
   expect(ssml.ssml).equals(`<speak>${text}</speak>`)
+  expect(os.playBehavior).equals(playBehavior)
 }

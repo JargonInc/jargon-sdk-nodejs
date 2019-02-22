@@ -16,30 +16,56 @@ import {
   Directive,
   Intent,
   interfaces,
-  Response
+  Response,
+  ui
 } from 'ask-sdk-model'
 import AudioItemMetadata = interfaces.audioplayer.AudioItemMetadata
 
 import { RenderItem } from '@jargon/sdk-core'
 
+/**
+ * Options that modify the default response builder behavior for a specific call.
+ * These flags may be Jargon-specific (such as merge) or come from the ASK response
+ * builder (playBehavior).
+ */
+export interface ResponseGenerationOptions {
+  /**
+   * If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options.
+   * True merges the rendered content with previously rendered content; false replaces any previous content
+   */
+  merge?: boolean
+  /** Optional playBehavior parameter for speak and reprompt (for ASK v2.4.0 and greater) */
+  playBehavior?: ui.PlayBehavior
+}
+
+/**
+ * Type alias for response builder parameters that were previously optional
+ * booleans (for merge), but that can now also take a ResponseGenerationOptions instance
+ */
+export type RGOParam = ResponseGenerationOptions | boolean
+
+/**
+ * JargonResponseBuilder mirrors the ASK response builder, but takes RenderItems instead
+ * of raw strings for parameters that end up being spoken or displayed to the end user.
+ */
 export interface JargonResponseBuilder {
   /**
    * Has Alexa say the provided speech to the user
    * @param {RenderItem} speechOutput The item to render for the speech content
-   * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options.
-   * True merges the rendered content with previously rendered content; false replaces any previous content
+   * @param {RGOParam} optionsOrMerge Options to control response generation behavior. A boolean value
+   *  is treated as ResponseGenerationOptions.merge (for backwards compatibility)
    * @returns {ResponseBuilder}
    */
-  speak (speechOutput: RenderItem, merge?: boolean): this
+  speak (speechOutput: RenderItem, optionsOrMerge?: RGOParam): this
   /**
    * Has alexa listen for speech from the user. If the user doesn't respond within 8 seconds
    * then has alexa reprompt with the provided reprompt speech
    * @param {RenderItem} repromptSpeechOutput The item to render for the reprompt content
-   * @param {boolean} merge If provided, overrides the mergeSpeakAndReprompt setting in the response builder's options
-   * True merges the rendered content with previously rendered content; false replaces any previous content
+   * @param {RGOParam} optionsOrMerge Options to control response generation behavior. A boolean value
+   *  is treated as ResponseGenerationOptions.merge (for backwards compatibility)
    * @returns {ResponseBuilder}
    */
-  reprompt (repromptSpeechOutput: RenderItem, merge?: boolean): this
+  reprompt (repromptSpeechOutput: RenderItem, optionsOrMerge?: RGOParam): this
   /**
    * Renders a simple card with the following title and content
    * @param {RenderItem} cardTitle
@@ -180,6 +206,9 @@ export interface JargonResponseBuilder {
   getResponse (): Promise<Response>
 }
 
+/**
+ * Options that alter the response builder's default behavior
+ */
 export interface JargonResponseBuilderOptions {
   /**
    * If true, repeated calls to speak or reprompt will merge their
