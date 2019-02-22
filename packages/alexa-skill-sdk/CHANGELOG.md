@@ -1,3 +1,14 @@
+### 1.2.0
+Support optional playBehavior parameter in ResponseBuilder.speak and .reprompt
+
+ASK v2.4.0 exposes a new optional parameter to speak and reprompt. As JargonResponseBuilder
+had already added a different optional parameter to those methods (merge), it now instead
+takes either the previous optional boolean, or a new options object (ResponseGenerationOptions)
+that has members for merge and playBehavior.
+
+When merging speak/reprompt the first provided playBehavior (if any) is used for the final result
+that's passed to the underlying ASK ResponseBuilder.
+
 ### 1.1.4
 Bump sdk-core dependency to 1.1.0 to take of advantage of its new built-in resources for common scenarios. These resources are available using the `RenderItem` keys:
 * `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
