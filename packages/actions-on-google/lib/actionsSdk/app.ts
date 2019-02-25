@@ -22,6 +22,9 @@ export const DefaultJargonActionsSdkAppOptions: Required<JargonActionsSdkAppOpti
   ...DefaultJargonAppBaseOptions
 }
 
+/**
+ * The main entrypoint into the Jargon SDK for Actions SDK applications
+ */
 export class JargonActionsSdkApp<
   TConvData = {},
   TUserStorage = {},
@@ -32,6 +35,10 @@ extends JargonAppBase<JargonActionsSdkAppOptions> {
     super(Object.assign({}, DefaultJargonActionsSdkAppOptions, options))
   }
 
+  /**
+   * Install jargon onto the provided Actions SDK application
+   * @param app {ActionsSdkApp} The application to install the JDK onto
+   */
   public installOnto (
     app: ActionsSdkApp<TConvData, TUserStorage, TConversation>
     ) {
