@@ -5,6 +5,8 @@ multiple languages from within their action.
 
 Need help localizing your actions to new languages and locales? Contact Jargon at localization@jargon.com.
 
+TODO -- insert TOC
+
 ## Requirements
 
 This version of the SDK works with Google Assistant actions that are built using the [Actions on Gooogle support library]().
@@ -93,6 +95,35 @@ You can determine which variation the SDK chose via the ResourceManager's select
 
 ## Runtime interface
 
+### ResponseFactory
+`ResponseFactory` makes it easy to construct responses that have content managed through the Jargon SDK.
+It contains methods that mirror the constructors of the Actions on Google response objects, with modified
+Options objects that take `RenderItem`s (described below) instead of raw string parameters.
+
+```typescript
+/**
+ * ResponseFactory simplifies the construction of response objects via the Jargon
+ * SDK. The various options objects mirror the constructors for the associated Actions
+ * on Google response objects, but take RenderItems instead of raw string parameters for
+ * content that is spoken or displayed to the end user.
+ *
+ * Note that all of the methods in ResponseFactory return a Promise to the response object.
+ */
+export interface ResponseFactory {
+  basicCard (options: JBasicCardOptions): Promise<BasicCard>
+  browseCarouselItem (options: JBrowseCarouselItemOptions): Promise<BrowseCarouselItem>
+  button (options: JButtonOptions): Promise<Button>
+  image (options: JImageOptions): Promise<Image>
+  linkOutSuggestion (options: JLinkOutSuggestionOptions): Promise<LinkOutSuggestion>
+  mediaObject (options: JMediaObjectOptions): Promise<MediaObject>
+  simple (options: JSimpleResponseOptions | RenderItem): Promise<SimpleResponse>
+  suggestions (...suggestions: RenderItem[]): Promise<Suggestions>
+  table (options: JTableOptions): Promise<Table>
+  tableColumn (column: JTableColumn): Promise<TableColumn>
+  tableRow (row: JTableRow): Promise<TableRow>
+}
+```
+
 ### RenderItem
 A RenderItem specifies a resource key, optional parameters, and options to control details of the rendering (which
 are themselves optional).
@@ -139,9 +170,10 @@ interface RenderOptions {
 ```
 ### JargonDialogflowApp and JargonActionsSdkApp
 
-* Use the version that corresponds with the API your action is written against
-* Installs middleware to create the Jargon per-request objects
-* That middleware adds the following to the conversation object passed to your intent handlers
+`JargonDialogflowApp` and `JargonActionsSdkApp` are the main entry point to the Jargon SDK. You should
+use the version that corresponds with the API your action is written against (likely Dialogflow). These
+objects install middleware that create the Jargon SDK's per request objects, which are added to the conversation
+object passed to your intent handlers.
 
 ```typescript
 // Jargon extensions to the base Actions on Google Conversation
@@ -164,33 +196,6 @@ const app = dialogflow()
 
 // Install the Jargon SDK onto the application
 new JargonDialogflowApp().installOnto(app)
-```
-
-### ResponseFactory
-
-* Simplifies the creation of response objects
-* Each response type (simple, basic card, etc.) has a corresponding method that takes a Jargon variant of the options
-   * The main difference with the Jargon variants is replacing user-visisble `string` fields with `RenderItem`s
-
-```typescript
-export interface JBasicCardOptions {
-  title?: RenderItem
-  subtitle?: RenderItem
-  text?: RenderItem
-  image?: GoogleActionsV2UiElementsImage
-  buttons?: GoogleActionsV2UiElementsButton | GoogleActionsV2UiElementsButton[]
-  display?: GoogleActionsV2UiElementsBasicCardImageDisplayOptions
-}
-
-export interface JSimpleResponseOptions {
-  speech: RenderItem
-  text?: RenderItem
-}
-
-export interface ResponseFactory {
-  basicCard (options: JBasicCardOptions): Promise<BasicCard>
-  simple (options: JSimpleResponseOptions | RenderItem): Promise<SimpleResponse>
-}
 ```
 
 ### ResourceManager
@@ -261,10 +266,42 @@ You can render these resources as you would any of your own. You can also define
 
 Currently the SDK includes variants of these resources for English, with other languages coming soon.
 
-## Adding to an existing action
+## Adding to an existing skill
 
 ### Installation
+First add the Jargon SDK as a dependency of your function code (action_root/function/)
+  * npm i --save @jargon/actions-on-google
+  * yarn add @jargon/actions-on-google
+
+Next, install Jargon's skill builder onto your Dialogflow or Actions SDK application
+```javascript
+// Import the Jargon SDK
+const Jargon = require('@jargon/alexa-skill-sdk')
+
+// Installation -- Dialogflow
+const app = ...
+new Jargon.JargonDialogflowApp().installOnto(app)
+
+// Installation -- Actions SDK
+const app = ...
+new Jargon.JargonActionsSdkApp().installOnto(app)
+```
 
 ### Externalize resources
+The content that your skill outputs via ask(), etc., needs to move from wherever
+it currently lives in to Jargon resource files. That's currently a manual step, but in the future
+we'll have tools to help automate portions of the process.
+
+Resource files go under action_root/functions/resources, and are named by the locale they contain
+content for (e.g., "en-US.json").
+
+### Use the Jargon response factory to create response objects
+The conversation object passed to your application's intent handlers includes a reference to the locale-specific
+Jargon `ResponseFactory`
+* `conv.jrf`
+* `conv.jargonResponseFactory`
+
+Feel free to move to the Jargon response factory incrementally.
+
 
 

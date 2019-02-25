@@ -22,6 +22,9 @@ export const DefaultJargonDialogflowAppOptions: Required<JargonDialogflowAppOpti
   ...DefaultJargonAppBaseOptions
 }
 
+/**
+ * The main entrypoint into the Jargon SDK for Dialogflow applications
+ */
 export class JargonDialogflowApp<
   TConvData = {},
   TUserStorage = {},
@@ -33,6 +36,10 @@ extends JargonAppBase<JargonDialogflowAppOptions> {
     super(Object.assign({}, DefaultJargonDialogflowAppOptions, options))
   }
 
+  /**
+   * Install jargon onto the provided Dialogflow application
+   * @param app {DialogflowApp} The application to install the JDK onto
+   */
   public installOnto (
     app: DialogflowApp<TConvData, TUserStorage, TContexts, TConversation>
     ) {

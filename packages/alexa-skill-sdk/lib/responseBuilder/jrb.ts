@@ -12,14 +12,20 @@
  */
 
 import { ResponseBuilder } from 'ask-sdk-core'
-import { canfulfill, Directive, Intent, interfaces, Response } from 'ask-sdk-model'
-import { JargonResponseBuilder, JargonResponseBuilderOptions } from '.'
+import { canfulfill, Directive, Intent, interfaces, Response, ui } from 'ask-sdk-model'
+import { JargonResponseBuilder, JargonResponseBuilderOptions, ResponseGenerationOptions, RGOParam } from '.'
 import { escapeSSML } from './escape'
+import { chain, isBoolean, isObject } from 'lodash'
 import { RenderItem, ResourceManager } from '@jargon/sdk-core'
 import AudioItemMetadata = interfaces.audioplayer.AudioItemMetadata
 
 export const DefaultJargonResponseBuilderOptions: Required<JargonResponseBuilderOptions> = {
   mergeSpeakAndReprompt: false
+}
+
+interface SROp {
+  val: string
+  playBehavior?: ui.PlayBehavior
 }
 
 export class JRB implements JargonResponseBuilder {
@@ -28,8 +34,8 @@ export class JRB implements JargonResponseBuilder {
   private _opts: Required<JargonResponseBuilderOptions>
 
   private _q: RBOp[] = []
-  private _speak: string[] = []
-  private _reprompt: string[] = []
+  private _speak: SROp[] = []
+  private _reprompt: SROp[] = []
 
   constructor (rb: ResponseBuilder, rm: ResourceManager, opts: JargonResponseBuilderOptions = {}) {
     this._rb = rb
@@ -37,14 +43,18 @@ export class JRB implements JargonResponseBuilder {
     this._opts = Object.assign({}, DefaultJargonResponseBuilderOptions, opts)
   }
 
-  speak (speechOutput: RenderItem, merge?: boolean): this {
+  speak (speechOutput: RenderItem, optionsOrMerge?: RGOParam): this {
     let p = this._rm.render(speechOutput)
     let op = async (rb: ResponseBuilder) => {
       const val = escapeSSML(await p)
-      if (this._shouldMerge(merge)) {
-        this._speak.push(val)
+      const op = {
+        val,
+        playBehavior: playBehavior(optionsOrMerge)
+      }
+      if (this._shouldMerge(optionsOrMerge)) {
+        this._speak.push(op)
       } else {
-        this._speak = [val]
+        this._speak = [op]
       }
 
       return rb
@@ -53,14 +63,18 @@ export class JRB implements JargonResponseBuilder {
     return this
   }
 
-  reprompt (repromptSpeechOutput: RenderItem, merge?: boolean): this {
+  reprompt (repromptSpeechOutput: RenderItem, optionsOrMerge?: RGOParam): this {
     let p = this._rm.render(repromptSpeechOutput)
     let op = async (rb: ResponseBuilder) => {
       const val = escapeSSML(await p)
-      if (this._shouldMerge(merge)) {
-        this._reprompt.push(val)
+      const op = {
+        val,
+        playBehavior: playBehavior(optionsOrMerge)
+      }
+      if (this._shouldMerge(optionsOrMerge)) {
+        this._reprompt.push(op)
       } else {
-        this._reprompt = [val]
+        this._reprompt = [op]
       }
 
       return rb
@@ -196,23 +210,51 @@ export class JRB implements JargonResponseBuilder {
     }
 
     if (this._speak.length > 0) {
-      this._rb.speak(this._speak.join(' '))
+      this._rb.speak(mergedString(this._speak), mergedPlayBehavior(this._speak))
     }
 
     if (this._reprompt.length > 0) {
-      this._rb.reprompt(this._reprompt.join(' '))
+      this._rb.reprompt(mergedString(this._reprompt), mergedPlayBehavior(this._reprompt))
     }
 
     return this._rb.getResponse()
   }
 
-  private _shouldMerge (merge?: boolean): boolean {
-    if (merge !== undefined) {
-      return merge
+  private _shouldMerge (optionsOrMerge?: RGOParam): boolean {
+    if (isBoolean(optionsOrMerge)) {
+      return optionsOrMerge
+    }
+
+    if (isResponseGenerationOptions(optionsOrMerge) && isBoolean(optionsOrMerge.merge)) {
+      return optionsOrMerge.merge
     }
 
     return this._opts.mergeSpeakAndReprompt
   }
+}
+
+function isResponseGenerationOptions (opt?: RGOParam): opt is ResponseGenerationOptions {
+  return (opt && isObject(opt)) || false
+}
+
+function playBehavior (optionsOrMerge?: RGOParam): ui.PlayBehavior | undefined {
+  if (isResponseGenerationOptions(optionsOrMerge)) {
+    return optionsOrMerge.playBehavior
+  }
+
+  return undefined
+}
+
+function mergedString (ops: SROp[]): string {
+  return ops.map(v => v.val).join(' ')
+}
+
+function mergedPlayBehavior (ops: SROp[]): ui.PlayBehavior | undefined {
+  return chain(ops)
+    .map(op => op.playBehavior)
+    .compact()
+    .first()
+    .value()
 }
 
 type RBOp = (rb: ResponseBuilder) => Promise<ResponseBuilder>

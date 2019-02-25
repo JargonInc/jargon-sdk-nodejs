@@ -14,6 +14,9 @@
 import { RenderItem, ResourceManager } from '@jargon/sdk-core'
 import { BasicCard, BasicCardOptions, BrowseCarouselItem, BrowseCarouselItemOptions, Button, ButtonOptions, GoogleActionsV2UiElementsBasicCardImageDisplayOptions, GoogleActionsV2UiElementsButton, GoogleActionsV2UiElementsImage, GoogleActionsV2UiElementsOpenUrlAction, GoogleActionsV2UiElementsTableCardColumnPropertiesHorizontalAlignment, Image, ImageOptions, LinkOutSuggestion, LinkOutSuggestionOptions, MediaObject, MediaObjectOptions, SimpleResponse, SimpleResponseOptions, Suggestions, Table, TableColumn, TableOptions, TableRow } from 'actions-on-google'
 
+/**
+ * A Jargonized version of BasicCardOptions
+ */
 export interface JBasicCardOptions {
   title?: RenderItem
   subtitle?: RenderItem
@@ -24,6 +27,9 @@ export interface JBasicCardOptions {
 }
 const jBasicCardFields = ['title', 'subtitle', 'text']
 
+/**
+ * A Jargonized version of BrowseCarouselItemOptions
+ */
 export interface JBrowseCarouselItemOptions {
   title: RenderItem
   url: string
@@ -33,6 +39,9 @@ export interface JBrowseCarouselItemOptions {
 }
 const jBrowseCarouselItemFields = ['title', 'description', 'footer']
 
+/**
+ * A Jargonized version of ButtonOptions
+ */
 export interface JButtonOptions {
   title: RenderItem
   url?: string
@@ -40,6 +49,9 @@ export interface JButtonOptions {
 }
 const jButtonFields = ['title']
 
+/**
+ * A Jargonized version of ImageOptions
+ */
 export interface JImageOptions {
   url: string
   alt: RenderItem
@@ -48,12 +60,18 @@ export interface JImageOptions {
 }
 const jImageFields = ['alt']
 
+/**
+ * A Jargonized version of LinkOutSuggestionOptions
+ */
 export interface JLinkOutSuggestionOptions {
   name: RenderItem
   url: string
 }
 const jLinkOutSuggestionFields = ['name']
 
+/**
+ * A Jargonized version of MediaObjectOptions
+ */
 export interface JMediaObjectOptions {
   url: string
   description?: RenderItem
@@ -63,12 +81,18 @@ export interface JMediaObjectOptions {
 }
 const jMediaObjectFields = ['description', 'name']
 
+/**
+ * A Jargonized version of SimpleResponseOptions
+ */
 export interface JSimpleResponseOptions {
   speech: RenderItem
   text?: RenderItem
 }
 const jSimpleResponseFields = ['speech', 'text']
 
+/**
+ * A Jargonized version of TableOptions
+ */
 export interface JTableOptions {
   title?: RenderItem
   subtitle?: RenderItem
@@ -81,6 +105,9 @@ export interface JTableOptions {
 }
 const jTableOptionsFields = ['title', 'subtitle']
 
+/**
+ * A Jargonized version of TableColumn
+ */
 export interface JTableColumn {
   header?: RenderItem
   horizontalAlignment?: GoogleActionsV2UiElementsTableCardColumnPropertiesHorizontalAlignment
@@ -88,11 +115,22 @@ export interface JTableColumn {
 }
 const jTableColumnFields = ['header']
 
+/**
+ * A Jargonized version of TableRow
+ */
 export interface JTableRow {
   cells?: RenderItem[]
   dividerAfter?: boolean
 }
 
+/**
+ * ResponseFactory simplifies the construction of response objects via the Jargon
+ * SDK. The various options objects mirror the constructors for the associated Actions
+ * on Google response objects, but take RenderItems instead of raw string parameters for
+ * content that is spoken or displayed to the end user.
+ *
+ * Note that all of the methods in ResponseFactory return a Promise to the response object.
+ */
 export interface ResponseFactory {
   basicCard (options: JBasicCardOptions): Promise<BasicCard>
   browseCarouselItem (options: JBrowseCarouselItemOptions): Promise<BrowseCarouselItem>
@@ -107,6 +145,9 @@ export interface ResponseFactory {
   tableRow (row: JTableRow): Promise<TableRow>
 }
 
+/**
+ * The core implementation of ResponseFactory
+ */
 export class CommonResponseFactory implements ResponseFactory {
 
   constructor (private _rm: ResourceManager) {}

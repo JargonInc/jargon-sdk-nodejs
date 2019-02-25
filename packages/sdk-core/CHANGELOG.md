@@ -1,3 +1,6 @@
+### 1.1.1
+Support nested `RenderItem` parameters in `ResourceManager.renderObject`
+
 ### 1.1.0
 Add built-in resources for common scenarios. These resources are available using the `RenderItem` keys:
 * `Jargon.unhandledResponse` -- provides a response for when you can't otherwise process an intent
@@ -27,7 +30,7 @@ an implementation.
 The use of a RenderItem instance as a parameter value makes it easy to compose multiple
 resource together at runtime. This is useful when a parameter value varies across locales,
 or when you want the SDK to select across multiple variations for a parameter value, and reduces
-the need to chain together multiple calls into the  ResourceManager.
+the need to chain together multiple calls into the `ResourceManager`.
 
 ### 1.0.3
 * Add ResourceManager.selectedVariation\[s\]()
