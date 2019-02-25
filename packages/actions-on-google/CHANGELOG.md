@@ -1,3 +1,6 @@
+### 1.0.0
+Documentation and readme updates; no functionality changes
+
 ### 0.3.1 / 0.3.2
 Readme updates only; no functionality changes
 
