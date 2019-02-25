@@ -112,8 +112,8 @@ You can determine which variation the SDK chose via the ResourceManager's select
 ## Runtime interface
 
 ### JargonResponseBuilder
-The core class you'll work with. JargonResponseBuilder mirrors the ASK SDK response builder, but changes string
-parameters containing content presented to users to RenderItems (see below).
+The core class you'll work with. `JargonResponseBuilder` mirrors the ASK SDK response builder, but changes string
+parameters containing content presented to users to `RenderItem`s (see below).
 
 By default the `speak` and `reprompt` methods replace the content from previous calls to those methods; this behavior mirrors
 that of corresponding ASK SDK methods. There are two ways to change this behavior such to multiple calls to result in content
