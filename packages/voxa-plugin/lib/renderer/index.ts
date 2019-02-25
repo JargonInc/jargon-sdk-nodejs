@@ -26,10 +26,18 @@ export class JargonRenderer extends Renderer {
     this._vars = config.variables || {}
   }
 
-  public async renderPath (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<any> {
+  public async renderPath<T> (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<string | T> {
     const params = this._makeRenderParams(voxaEvent, variables)
     const item = ri(view, params, voxaEvent.jargonRenderOptions)
-    return voxaEvent.jrm!.renderObject(item)
+    let message: any = await voxaEvent.jrm!.renderObject(item)
+
+    // Check for a platform-specific message
+    const platform = voxaEvent.platform.name
+    if (platform && message[platform]) {
+      message = message[platform]
+    }
+
+    return message
   }
 
   private _makeRenderParams (voxaEvent: IVoxaEvent, variables?: any): RenderParams {

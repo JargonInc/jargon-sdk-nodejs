@@ -12,13 +12,14 @@
  */
 
 import { expect } from 'chai'
-import { DefaultResourceManagerFactory, ri } from '../lib/'
+import { DefaultResourceManagerFactory, ri } from '../lib'
 import { JargonRenderer } from '../lib/renderer'
-import { IVoxaEvent, AlexaEvent } from 'voxa'
+import { IVoxaEvent, AlexaEvent, AlexaPlatform, VoxaApp } from 'voxa'
 import { AlexaRequestBuilder } from './tools'
 
 const arb = new AlexaRequestBuilder()
 const rmf = new DefaultResourceManagerFactory({})
+const app = new VoxaApp({ views: {} })
 
 function makeVars (basic: string, plural: number) {
   return {
@@ -38,8 +39,11 @@ function renderer (variables?: any): JargonRenderer {
 function makeEvent (locale: string = 'en-US'): IVoxaEvent {
   const r = arb.getIntentRequest('FakeIntent')
   const jrm = rmf.forLocale(locale)
+  const e = new AlexaEvent(r)
+  e.platform = new AlexaPlatform(app)
+
   return {
-    ...new AlexaEvent(r),
+    ...e,
     jrm,
     jargonResourceManager: jrm
   }
@@ -116,4 +120,10 @@ it('Correctly handles nested render items via variables', async () => {
   const r = renderer(vars)
   const s = await r.renderPath('basicParam', makeEvent())
   expect(s).equals(`basicParam: ${param}`)
+})
+
+it('Returns the platform-specific content if present', async () => {
+  const r = renderer()
+  const s: any = await r.renderPath('platformSpecific', makeEvent())
+  expect(s.message).equals('alexa-specific message')
 })
