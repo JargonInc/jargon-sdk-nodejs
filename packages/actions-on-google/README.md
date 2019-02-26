@@ -5,7 +5,25 @@ multiple languages from within their action.
 
 Need help localizing your actions to new languages and locales? Contact Jargon at localization@jargon.com.
 
-TODO -- insert TOC
+- [Jargon SDK for Google Assistant Actions (nodejs)](#jargon-sdk-for-google-assistant-actions-nodejs)
+  - [Requirements](#requirements)
+  - [Core concepts](#core-concepts)
+    - [Content resources and resource files](#content-resources-and-resource-files)
+    - [Resource value format](#resource-value-format)
+      - [Named parameters](#named-parameters)
+      - [Plural forms](#plural-forms)
+      - [Gendered forms](#gendered-forms)
+    - [Variations](#variations)
+  - [Runtime interface](#runtime-interface)
+    - [ResponseFactory](#responsefactory)
+    - [RenderItem](#renderitem)
+    - [JargonDialogflowApp and JargonActionsSdkApp](#jargondialogflowapp-and-jargonactionssdkapp)
+    - [ResourceManager](#resourcemanager)
+    - [Built-in Resources](#built-in-resources)
+  - [Adding to an existing skill](#adding-to-an-existing-skill)
+    - [Installation](#installation)
+    - [Externalize resources](#externalize-resources)
+    - [Use the Jargon response factory to create response objects](#use-the-jargon-response-factory-to-create-response-objects)
 
 ## Requirements
 

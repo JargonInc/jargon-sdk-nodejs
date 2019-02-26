@@ -1,3 +1,6 @@
+### 1.0.1
+Add table of contents to readme
+
 ### 1.0.0
 Documentation and readme updates; no functionality changes
 

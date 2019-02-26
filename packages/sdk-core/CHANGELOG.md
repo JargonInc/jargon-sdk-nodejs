@@ -1,3 +1,10 @@
+### 1.1.2
+Fix bug returning selected variations
+
+SelectedVariation.variationKey was getting the rendered content instead
+of the selected key. Test missed this as the test resources had the content
+the same as the key...
+
 ### 1.1.1
 Support nested `RenderItem` parameters in `ResourceManager.renderObject`
 

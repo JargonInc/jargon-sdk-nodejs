@@ -22,8 +22,8 @@
   "rawNumber":42,
   "substitution":"Hello {name}",
   "variation":{
-    "v1":"v1",
-    "v2":"v2"
+    "v1":"v1-content",
+    "v2":"v2-content"
   },
   "variationWithParam":{
     "v1":"v1 {param}",

@@ -47,7 +47,7 @@ export class I18NextResourceManager implements ResourceManager {
         let sv: SelectedVariation = {
           item: item,
           key: fk,
-          variationKey: v
+          variationKey: key
         }
         this._selectedVariants.push(sv)
       }
