@@ -26,7 +26,7 @@ it('returns only one of the expected string variations', async () => {
   let i = 0
   let item = ri('variation')
   let first = await rm.render(item)
-  expect(first).to.be.oneOf(['v1','v2'])
+  expect(first).to.be.oneOf(variationContent)
   while (i++ < 10) {
     let s = await rm.render(item)
     expect(s).equals(first)
@@ -38,7 +38,7 @@ it('returns multiple variations variations based on render item override', async
   await checkVariations(rm, item)
 })
 
-it('returns multiple variations variations based on resource manager confguration', async () => {
+it('returns multiple variations variations based on resource manager configuration', async () => {
   let rf = new I18NextResourceManagerFactory({ consistentRandom: false })
   let rm = rf.forLocale(locale)
   let item = ri('variation', {})
@@ -50,7 +50,8 @@ it('tracks the variation that was selected', async () => {
   let s = await rm.render(item)
   let sv = await rm.selectedVariation(item)
 
-  expect(sv.variationKey).equals(s)
+  expect(sv.variationKey).to.be.oneOf(['v1', 'v2'])
+  expect(s.startsWith(sv.variationKey)).true
   assert(sv.key.startsWith('variation'))
 })
 
@@ -267,16 +268,17 @@ it('understands internal resources of different locales', async () => {
   expect(s).equals('A German reprompt')
 })
 
+const variationContent = ['v1-content', 'v2-content']
 async function checkVariations (rm: ResourceManager, item: RenderItem) {
   let i = 0
   let previous = await rm.render(item)
-  expect(previous).to.be.oneOf(['v1','v2'])
+  expect(previous).to.be.oneOf(variationContent)
 
   let sawVariation = false
-  while (i++ < 10) {
+  while (i++ < 10 && !sawVariation) {
     let s = await rm.render(item)
-    expect(previous).to.be.oneOf(['v1','v2'])
-    sawVariation = sawVariation || s !== previous
+    expect(s).to.be.oneOf(variationContent)
+    sawVariation = s !== previous
   }
 
   expect(sawVariation).to.be.true
