@@ -12,7 +12,7 @@
 		"clean-all": "yarn run clean-build && yarn run clean-node_modules"
 	},
 	"devDependencies": {
-		"lerna": "^3.4.0"
+		"lerna": "^3.13.0"
 	},
 	"workspaces": {
 		"packages": [
@@ -21,5 +21,6 @@
 		"nohoist": [
 			"**/ts-node"
 		]
-	}
+	},
+	"name": "jargon-sdk-nodejs"
 }

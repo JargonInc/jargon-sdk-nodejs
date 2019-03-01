@@ -1,0 +1,13 @@
+{
+  "basicParam":"basicParam: {basicParam}",
+  "platformSpecific":{
+    "alexa":{
+      "message":"alexa-specific message"
+    },
+    "message":"generic message"
+  },
+  "pluralParam":"{pluralParam, plural, =0 {zero} =1 {One {basicParam}} other {#}}",
+  "simple":"simple",
+  "SimpleIntent":"A simple response",
+  "sub":"{param}"
+}
