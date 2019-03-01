@@ -1,3 +1,6 @@
+### 1.0.2
+Minor readme tweaks
+
 ### 1.0.1
 Add table of contents to readme
 

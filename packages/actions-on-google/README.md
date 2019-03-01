@@ -1,11 +1,11 @@
-# Jargon SDK for Google Assistant Actions (nodejs)
+# Jargon SDK for Actions on Google (nodejs)
 
 The Jargon SDK makes it easy for action developers to manage their runtime content, and to support
 multiple languages from within their action.
 
 Need help localizing your actions to new languages and locales? Contact Jargon at localization@jargon.com.
 
-- [Jargon SDK for Google Assistant Actions (nodejs)](#jargon-sdk-for-google-assistant-actions-nodejs)
+- [Jargon SDK for Actions on Google (nodejs)](#jargon-sdk-for-actions-on-google-nodejs)
   - [Requirements](#requirements)
   - [Core concepts](#core-concepts)
     - [Content resources and resource files](#content-resources-and-resource-files)
@@ -27,7 +27,7 @@ Need help localizing your actions to new languages and locales? Contact Jargon a
 
 ## Requirements
 
-This version of the SDK works with Google Assistant actions that are built using the [Actions on Gooogle support library]().
+This version of the SDK works with Google Assistant actions that are built using the [Actions on Gooogle client library](https://github.com/actions-on-google/actions-on-google-nodejs).
 
 The Jargon SDK makes use of Javascript features supported by Node version 8 and later. When deploying on Google / Firebase cloud functions make sure you're selecting the appropriate engine in your package.json:
 
