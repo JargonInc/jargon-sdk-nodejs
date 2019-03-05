@@ -1,3 +1,8 @@
+### 1.2.1
+Add Typescript ambient definitions for the Jargon SDK's additions to HandlerInput. With this
+change there's no longer a need to cast HanderInput to JargonHandlerInput to access the Jargon
+response builder or resource manager.
+
 ### 1.2.0
 Support optional playBehavior parameter in ResponseBuilder.speak and .reprompt
 
