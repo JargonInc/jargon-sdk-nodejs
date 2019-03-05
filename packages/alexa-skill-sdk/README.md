@@ -358,9 +358,6 @@ In your skill handlers access the Jargon response builder via one of the followi
 * `handlerInput.attributesManager.getRequestAttributes().jrb`
 * `handlerInput.attributesManager.getRequestAttributes().jargonResponseBuilder`
 
-TypeScript users: you'll need to cast `handlerInput` to `JargonHandlerInput` if you want to use one of
-the first two forms.
-
 Feel free to move to the Jargon response builder incrementally; however, you shouldn't mix the use of
 the ASK response builder and the Jargon response builder in a single request due to the last-write-wins
 behavior of `speak()` and `reprompt()` in the ASK response builder.

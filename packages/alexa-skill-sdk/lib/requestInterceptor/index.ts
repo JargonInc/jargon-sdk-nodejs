@@ -15,11 +15,16 @@ import { HandlerInput, RequestInterceptor } from 'ask-sdk-core'
 import { ResourceManagerFactory, ResourceManager } from '@jargon/sdk-core'
 import { JRB, JargonResponseBuilder, JargonResponseBuilderOptions } from '../responseBuilder'
 
+declare module 'ask-sdk-core' {
+  export interface HandlerInput {
+    jargonResponseBuilder: JargonResponseBuilder
+    jrb: JargonResponseBuilder
+    jargonResourceManager: ResourceManager
+    jrm: ResourceManager
+  }
+}
+
 export interface JargonHandlerInput extends HandlerInput {
-  jargonResponseBuilder: JargonResponseBuilder
-  jrb: JargonResponseBuilder
-  jargonResourceManager: ResourceManager
-  jrm: ResourceManager
 }
 
 export class JargonRequestInterceptor implements RequestInterceptor {
@@ -45,10 +50,9 @@ export class JargonRequestInterceptor implements RequestInterceptor {
     attributes.jargonResourceManager = rm
     attributes.jrm = rm
 
-    let jhi: JargonHandlerInput = handlerInput as JargonHandlerInput
-    jhi.jargonResponseBuilder = jrb
-    jhi.jrb = jrb
-    jhi.jargonResourceManager = rm
-    jhi.jrm = rm
+    handlerInput.jargonResponseBuilder = jrb
+    handlerInput.jrb = jrb
+    handlerInput.jargonResourceManager = rm
+    handlerInput.jrm = rm
   }
 }
