@@ -162,6 +162,15 @@ export interface ResourceManager {
    */
   renderObject<T> (item: RenderItem): Promise<T>
 
+  /** Selects a variation from an object. This method is intended to be used by frameworks
+   * that layer additional semantics onto resources (e.g., Voxa) but wish to leverage Jargon's
+   * variation selection logic.
+   * @param {RenderItem} item The RenderItem originally used to render obj. Used only for selection tracking
+   * @param {any} obj The object to select the variation from. While it's not required, this object presumably
+   *  came from a previous renderObject operation (or is a portion of such an object)
+   */
+  selectVariationFromObject (item: RenderItem, obj: any): Promise<string>
+
   /** Retrieves information about the selected variant for a rendered item. This
    * will only return a result when rendering the item required a variation
    * selection. If item has been used for multiple calls to a render routine

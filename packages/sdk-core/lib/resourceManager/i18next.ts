@@ -36,22 +36,7 @@ export class I18NextResourceManager implements ResourceManager {
     if (typeof s === 'string') {
       return Promise.resolve(s)
     } else if (typeof s === 'object') {
-      let key = this.selectKey(Object.keys(s), item.options)
-      let v = s[key]
-      let fk = `${item.key}.${key}`
-      if (typeof v !== 'string') {
-        return Promise.reject(new Error(`Unexpected type ${typeof v} for item key ${fk}`))
-      }
-
-      if (this._opts.trackSelectedVariations) {
-        let sv: SelectedVariation = {
-          item: item,
-          key: fk,
-          variationKey: key
-        }
-        this._selectedVariants.push(sv)
-      }
-      return Promise.resolve(v)
+      return this.selectVariationFromObject(item, s)
     }
 
     return Promise.reject(new Error(`Unexpected type ${typeof s} for item key ${item.key}`))
@@ -81,6 +66,26 @@ export class I18NextResourceManager implements ResourceManager {
     return Promise.reject(new Error(`Unexpected type ${t} for item key ${item.key}`))
   }
 
+  public selectVariationFromObject (item: RenderItem, obj: any): Promise<string> {
+    let key = this.selectKey(Object.keys(obj), item.options)
+    let v = obj[key]
+    let fk = `${item.key}.${key}`
+    if (typeof v !== 'string') {
+      return Promise.reject(new Error(`Unexpected type ${typeof v} for item key ${fk}`))
+    }
+
+    if (this._opts.trackSelectedVariations) {
+      let sv: SelectedVariation = {
+        item: item,
+        key: fk,
+        variationKey: key
+      }
+      this._selectedVariants.push(sv)
+    }
+
+    return Promise.resolve(v)
+  }
+
   public selectedVariation (item: RenderItem): Promise<SelectedVariation> {
     let v = this._selectedVariants.filter(i => i.item === item)
     if (v.length === 0) {
@@ -96,7 +101,7 @@ export class I18NextResourceManager implements ResourceManager {
 
   protected selectKey (keys: string[], opts?: RenderOptions): string {
     let rv = this._rv
-    if (opts && opts.forceNewRandom || !this._opts.consistentRandom) {
+    if ((opts && opts.forceNewRandom) || !this._opts.consistentRandom) {
       rv = Math.random()
     }
 
