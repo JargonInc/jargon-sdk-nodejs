@@ -19,7 +19,7 @@
 			"packages/*"
 		],
 		"nohoist": [
-			"**/ts-node"
+			"**/ts-mocha"
 		]
 	},
 	"name": "jargon-sdk-nodejs"

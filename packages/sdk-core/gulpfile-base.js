@@ -18,11 +18,10 @@ module.exports = {
   },
   test : (done) => {
     const nycPath = path.normalize('./node_modules/.bin/nyc');
-    const mochaPath = path.normalize('./node_modules/.bin/_mocha');
-    const tsNodePath = path.normalize('./node_modules/ts-node/register/index.js');
+    const tsMochaPath = path.normalize('./node_modules/.bin/ts-mocha');
     const nycTmpPath = path.join('coverage', './nyc-output');
     const command = `${nycPath} -x tst -e .ts --temp-directory ${nycTmpPath} -r html -r text-summary -r cobertura ` +
-        `${mochaPath} --require ${tsNodePath} 'tst/**/*.spec.ts' --reporter min`;
+        `${tsMochaPath} 'tst/**/*.spec.ts' --reporter min`;
 
     exec(command, done);
   },

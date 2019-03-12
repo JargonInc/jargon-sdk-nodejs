@@ -11,7 +11,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "gulp": "./node_modules/.bin/gulp"
+    "gulp": "./node_modules/.bin/gulp",
+    "test": "./node_modules/.bin/ts-mocha tst/**/*.spec.ts"
   },
   "author": "jargon.com",
   "contributors": [
@@ -44,7 +45,7 @@
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
-    "ts-node": "^7.0.1",
+    "ts-mocha": "^6.0.0",
     "tslint": "^5.11.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^3.1.5",
