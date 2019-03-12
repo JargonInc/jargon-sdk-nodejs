@@ -1,3 +1,10 @@
+### 1.2.0
+Expose variation selection logic in ResourceManager
+
+This is intended for use by Jargon's voxa plugin, so it can select
+variations after such things as selecting a platform specific message
+object.
+
 ### 1.1.2
 Fix bug returning selected variations
 
