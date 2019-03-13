@@ -11,16 +11,23 @@
  * permissions and limitations under the License.
  */
 
-import { DefaultResourceManagerFactory, DefaultResourceManagerOptions, ResourceManager, ResourceManagerFactory, ResourceManagerOptions, RenderOptions } from '@jargon/sdk-core'
-import { IVoxaEvent, IVoxaReply, VoxaApp } from 'voxa'
+import { DefaultResourceManagerFactory, DefaultResourceManagerOptions, RenderItem, RenderOptions, ResourceManager, ResourceManagerFactory, ResourceManagerOptions } from '@jargon/sdk-core'
+import { Ask, Hint, IVoxaEvent, IVoxaReply, Reprompt, Say, Tell, VoxaApp } from 'voxa'
+import { JAsk, JHint, JReprompt, JSay, JTell, JText } from '../directives'
 import { JargonRenderer } from '../renderer'
 
-declare module 'voxa/lib/src/VoxaEvent' {
+declare module 'voxa' {
   export interface IVoxaEvent {
-    jrm?: ResourceManager
-    jargonResourceManager?: ResourceManager
+    jrm: ResourceManager
+    jargonResourceManager: ResourceManager
     jargonRenderOptions?: RenderOptions
+    $jargon: JargonInternal
   }
+}
+
+/** Jargon SDK internal state */
+export interface JargonInternal {
+  renderItems: Map<string, RenderItem>
 }
 
 export interface JargonVoxaOptions extends ResourceManagerOptions {
@@ -40,9 +47,19 @@ export function JargonVoxa (options: JargonVoxaOptions, voxaConfig: any): VoxaAp
   return app
 }
 
+const directiveReplacements = {
+  [Ask.key]: JAsk,
+  [Hint.key]: JHint,
+  [Reprompt.key]: JReprompt,
+  [Say.key]: JSay,
+  [Tell.key]: JTell,
+  text: JText // Voxa doesn't current export Text
+}
+
 class JargonVoxaPlugin {
   private _options: Required<JargonVoxaOptions>
   private _rmf: ResourceManagerFactory
+  private _modifiedDirectives: Set<VoxaApp> = new Set()
 
   constructor (options: JargonVoxaOptions) {
     this._options = Object.assign({}, DefaultResourceManagerOptions, options)
@@ -54,8 +71,23 @@ class JargonVoxaPlugin {
   }
 
   requestHandler = (event: IVoxaEvent, reply: IVoxaReply) => {
+    this.modifyDirectives(event.platform.app)
     const locale = event.request.locale || 'en-US'
     event.jrm = this._rmf.forLocale(locale)
     event.jargonResourceManager = event.jrm
+    event.$jargon = makeJargonInternal()
+  }
+
+  protected modifyDirectives (app: VoxaApp) {
+    if (!this._modifiedDirectives.has(app)) {
+      app.directiveHandlers = app.directiveHandlers.map(dc => directiveReplacements[dc.key] || dc)
+      this._modifiedDirectives.add(app)
+    }
+  }
+}
+
+export function makeJargonInternal (): JargonInternal {
+  return {
+    renderItems: new Map()
   }
 }

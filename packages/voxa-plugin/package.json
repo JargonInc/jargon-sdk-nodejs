@@ -1,9 +1,9 @@
 {
   "name": "@jargon/voxa-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Voxa plugin for the Jargon SDK",
   "keywords": [
-    "Jargon",
+  "Jargon",
     "Voxa"
   ],
   "homepage": "https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/voxa-plugin#readme",
@@ -29,9 +29,10 @@
     "url": "https://github.com/JargonInc/jargon-sdk-nodejs/issues"
   },
   "dependencies": {
-    "@jargon/sdk-core": "^1.1.0"
+    "@jargon/sdk-core": "^1.2.0"
   },
   "peerDependencies": {
+    "ask-sdk-model": "1.x",
     "voxa": "^3.0.0"
   },
   "devDependencies": {
@@ -39,6 +40,7 @@
     "@types/lodash": "^4.14.121",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.1",
+    "ask-sdk-model": "1.x",
     "chai": "^4.2.0",
     "del": "^3.0.0",
     "gulp": "^4.0.0",

@@ -1,13 +1,53 @@
 {
   "basicParam":"basicParam: {basicParam}",
+  "hint":{
+    "v1":"hint 1",
+    "v2":"hint 2"
+  },
   "platformSpecific":{
     "alexa":{
       "message":"alexa-specific message"
     },
     "message":"generic message"
   },
+  "platformSpecificWithVariations": {
+    "alexa":{
+      "v1":"First variation alexa",
+      "v2":"Second variation alexa"
+    },
+    "botframework":"BF message",
+    "v1":"First variation",
+    "v2":"Second variation"
+  },
   "pluralParam":"{pluralParam, plural, =0 {zero} =1 {One {basicParam}} other {#}}",
+  "reply":{
+    "s1":{
+      "ask":"reply s1 ask",
+      "reprompt":{
+        "v1":"reply s1 reprompt 1",
+        "v2":"reply s1 reprompt 2"
+      }
+    }
+  },
   "simple":"simple",
+  "simpleAskAndReprompt":{
+    "ask":"ask message",
+    "reprompt":"reprompt message"
+  },
   "SimpleIntent":"A simple response",
-  "sub":"{param}"
+  "sub":"{param}",
+  "variation":{
+    "v1":"First variation",
+    "v2":"Second variation"
+  },
+  "variationAskAndReprompt":{
+    "ask":{
+      "v1":"ask message 1",
+      "v2":"ask message 2"
+    },
+    "reprompt":{
+      "v1":"reprompt message 1",
+      "v2":"reprompt message 2"
+    }
+  }
 }

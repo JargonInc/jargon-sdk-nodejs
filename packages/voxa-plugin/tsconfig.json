@@ -10,8 +10,9 @@
     "declaration" : true,
     "strict": true,
     "lib": [
-      "ES2016"
-    ]
+      "es2016"
+    ],
+    "skipLibCheck": true
   },
   "include": ["lib"]
 }

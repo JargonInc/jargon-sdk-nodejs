@@ -11,13 +11,28 @@
  * permissions and limitations under the License.
  */
 
-import { RenderParams, ri } from '@jargon/sdk-core'
+import { RenderItem, RenderParams, ri } from '@jargon/sdk-core'
+import { isString, pickBy } from 'lodash'
 import { IVoxaEvent, Renderer } from 'voxa'
-import { IRendererConfig } from 'voxa/src/renderers/Renderer'
+
+declare module 'voxa' {
+  export interface Renderer {
+    render (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<string>
+  }
+}
+
+// Ideally this would be constructed via referring to the actual platform classes,
+// but we'd need to instantiate instances of each of them to do so
+const platformNames = ['alexa', 'botframework', 'dialogflow']
+
+function messageFilter (value: string | object, key: string): boolean {
+  return isString(value) && !platformNames.includes(key)
+}
 
 export class JargonRenderer extends Renderer {
   private _vars: any
-  constructor (config: IRendererConfig) {
+  // Should be IRenderedConfig, but that's not currently exported from Voxa
+  constructor (config: any) {
     super({
       views: {},
       ...config
@@ -26,18 +41,44 @@ export class JargonRenderer extends Renderer {
     this._vars = config.variables || {}
   }
 
-  public async renderPath<T> (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<string | T> {
-    const params = this._makeRenderParams(voxaEvent, variables)
-    const item = ri(view, params, voxaEvent.jargonRenderOptions)
-    let message: any = await voxaEvent.jrm!.renderObject(item)
+  public async render (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<string> {
+    const item = this._makeRenderItem(view, voxaEvent, variables)
+    const message = await this._platformSpecificMessage(item, voxaEvent)
 
-    // Check for a platform-specific message
+    if (isString(message)) {
+      return message
+    }
+
+    const variants = pickBy(message, messageFilter)
+    return voxaEvent.jrm.selectVariationFromObject(item, variants)
+  }
+
+  public renderPath<T> (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<string | T> {
+    const item = this._makeRenderItem(view, voxaEvent, variables)
+    return this._platformSpecificMessage(item, voxaEvent)
+  }
+
+  private async _platformSpecificMessage<T> (item: RenderItem, voxaEvent: IVoxaEvent): Promise<string | T> {
+    let message: any = await voxaEvent.jrm.renderObject(item)
+
+    // Check for a platform-specific message, and filter out messages for other platforms
     const platform = voxaEvent.platform.name
     if (platform && message[platform]) {
       message = message[platform]
+    } else {
+      for (const p of platformNames) {
+        delete message[p]
+      }
     }
 
     return message
+  }
+
+  private _makeRenderItem (view: string, voxaEvent: IVoxaEvent, variables?: any): RenderItem {
+    const params = this._makeRenderParams(voxaEvent, variables)
+    const item = ri(view, params, voxaEvent.jargonRenderOptions)
+    voxaEvent.$jargon.renderItems.set(view, item)
+    return item
   }
 
   private _makeRenderParams (voxaEvent: IVoxaEvent, variables?: any): RenderParams {
