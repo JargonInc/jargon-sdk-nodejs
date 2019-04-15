@@ -1,3 +1,12 @@
+### 1.1.0
+Support alternative resource directories (via dependency on @jargon/sdk-core v1.3.0)
+
+Adds resourceDirectory to ResourceManagerOptions, with a default value of './resources',
+to allow for customizing the directory where resources are loaded from.
+
+The ResourceManagerFactory constructor will throw an error if resourceDirectory doesn't
+exist (ENOENT) or isn't a directory (ENOTDIR).
+
 ### 1.0.2
 Minor readme tweaks
 
