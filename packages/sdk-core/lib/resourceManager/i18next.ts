@@ -11,9 +11,11 @@
  * permissions and limitations under the License.
  */
 
+import { statSync } from 'fs'
 import * as i18n from 'i18next'
 // @ts-ignore Types not available
 import * as syncBackend from 'i18next-sync-fs-backend'
+import { join } from 'path'
 import { ICU } from './icuFormat'
 import { JargonResources } from './jargonResources'
 
@@ -131,6 +133,7 @@ export class I18NextResourceManagerFactory implements ResourceManagerFactory {
   private _opts: Required<ResourceManagerOptions>
   constructor (options: ResourceManagerOptions, appendedResources: any = JargonResources) {
     this._opts = Object.assign({}, DefaultResourceManagerOptions, options)
+
     let lang: any
     for (lang in appendedResources) {
       if (this._opts.localesToPreload.indexOf(lang) === -1) {
@@ -138,12 +141,21 @@ export class I18NextResourceManagerFactory implements ResourceManagerFactory {
       }
     }
 
+    const rd = this._opts.resourceDirectory
+    const stats = statSync(rd)
+    if (!stats.isDirectory()) {
+      const e: any = new Error(`ENOTDIR: ${rd} is not a directory`)
+      e.code = 'ENOTDIR'
+      e.path = rd
+      throw e
+    }
+
     this.baseTranslator = i18n
       .use(syncBackend)
       .use(new ICU({}))
       .init({
         backend: {
-          loadPath: './resources/{{lng}}.json'
+          loadPath: join(rd, '{{lng}}.json')
         },
         debug: false,
         fallbackLng: [],

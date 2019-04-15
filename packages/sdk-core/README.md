@@ -3,6 +3,25 @@
 Jargon's SDK core package contains functionality common to multiple voice platforms and
 frameworks.
 
+- [`@jargon/sdk-core`](#jargonsdk-core)
+  - [Core concepts](#core-concepts)
+    - [Content resources and resource files](#content-resources-and-resource-files)
+    - [Resource value format](#resource-value-format)
+      - [Named parameters](#named-parameters)
+      - [Plural forms](#plural-forms)
+      - [Gendered forms](#gendered-forms)
+    - [Variations](#variations)
+  - [Functionality](#functionality)
+    - [Resource management and runtime rendering](#resource-management-and-runtime-rendering)
+    - [Built-in Resources](#built-in-resources)
+  - [Runtime Interface](#runtime-interface)
+    - [RenderItem](#renderitem)
+    - [ResourceManager](#resourcemanager)
+    - [ResourceManagerFactory](#resourcemanagerfactory)
+    - [ResourceManagerOptions](#resourcemanageroptions)
+    - [RenderOptions](#renderoptions)
+  - [Usage](#usage)
+
 ## Core concepts
 
 ### Content resources and resource files
@@ -232,12 +251,16 @@ export interface ResourceManagerOptions {
    * allowing clients to view those selections through a call to selectedVariation(s)
    */
   trackSelectedVariations?: boolean
+
+  /** The directory where resources files are stored; defaults to './resources' */
+  resourceDirectory?: string
 }
 
 export const DefaultResourceManagerOptions: Required<ResourceManagerOptions> = {
   consistentRandom: true,
   localesToPreload: [],
-  trackSelectedVariations: true
+  trackSelectedVariations: true,
+  resourceDirectory: './resources'
 }
 ```
 

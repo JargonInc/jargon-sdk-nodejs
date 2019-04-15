@@ -2,7 +2,7 @@
 
 import { fail } from 'assert'
 import { assert, expect } from 'chai'
-import { DefaultResourceManagerOptions, I18NextResourceManagerFactory, RenderItem, ResourceManager, ri } from '../../lib/resourceManager'
+import { DefaultResourceManagerOptions, I18NextResourceManagerFactory, RenderItem, ResourceManager, ri, ResourceManagerOptions } from '../../lib/resourceManager'
 
 const rf = new I18NextResourceManagerFactory(DefaultResourceManagerOptions)
 const locale = 'en-US'
@@ -267,6 +267,41 @@ it('understands internal resources of different locales', async () => {
   s = await rm.render(ri('Jargon.defaultReprompt'))
   expect(s).equals('A German reprompt')
 })
+
+it('loads resources from an alternative directory', async () => {
+  const rm = rmForResourceDirectory('./alt-resources')
+  const s = await rm.render(ri('hello'))
+  expect(s).equals('from alt-resources')
+})
+
+it('throws the expected error for a missing resource directory', async () => {
+  try {
+    const rm = rmForResourceDirectory('./does-not-exist')
+    fail('Expected exception when creating a resource manager with a missing resource directory')
+  } catch (e) {
+    expect(e.code).equals('ENOENT')
+  }
+})
+
+it('throws the expected error for an incorrect resource directory', async () => {
+  try {
+    const rm = rmForResourceDirectory('./package.json')
+    fail('Expected exception when creating a resource manager with an incorrect resource directory')
+  } catch (e) {
+    expect(e.code).equals('ENOTDIR')
+  }
+})
+
+function rmForResourceDirectory (dir: string): ResourceManager {
+  const opts: Required<ResourceManagerOptions> = {
+    ...DefaultResourceManagerOptions,
+    resourceDirectory: dir
+  }
+
+  const rf = new I18NextResourceManagerFactory(opts)
+  const rm = rf.forLocale(locale)
+  return rm
+}
 
 const variationContent = ['v1-content', 'v2-content']
 async function checkVariations (rm: ResourceManager, item: RenderItem) {

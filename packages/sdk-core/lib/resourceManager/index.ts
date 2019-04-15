@@ -31,12 +31,16 @@ export interface ResourceManagerOptions {
    * allowing clients to view those selections through a call to selectedVariation(s)
    */
   trackSelectedVariations?: boolean
+
+  /** The directory where resources files are stored; defaults to './resources' */
+  resourceDirectory?: string
 }
 
 export const DefaultResourceManagerOptions: Required<ResourceManagerOptions> = {
   consistentRandom: true,
   localesToPreload: [],
-  trackSelectedVariations: true
+  trackSelectedVariations: true,
+  resourceDirectory: './resources'
 }
 
 /**
