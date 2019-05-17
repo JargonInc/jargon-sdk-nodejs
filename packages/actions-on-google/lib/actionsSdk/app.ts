@@ -12,7 +12,7 @@
  */
 
 import { ActionsSdkApp, ActionsSdkConversation } from 'actions-on-google'
-import { DefaultJargonAppBaseOptions, JargonAppBase, JargonAppBaseOptions } from '../common/app'
+import { DefaultJargonAppBaseOptions, JargonAppBase, JargonAppBaseOptions } from '../common'
 
 export interface JargonActionsSdkAppOptions extends JargonAppBaseOptions {
   // Placeholder for future options

@@ -13,7 +13,7 @@
 
 import { DefaultResourceManagerFactory, DefaultResourceManagerOptions, ResourceManager, ResourceManagerFactory, ResourceManagerOptions } from '@jargon/sdk-core'
 import { Conversation } from 'actions-on-google'
-import { CommonResponseFactory, ResponseFactory } from '../common'
+import { CommonResponseFactory, ResponseFactory } from './responseFactory'
 
 export interface JargonAppBaseOptions extends ResourceManagerOptions {
   // Placeholder for future options
