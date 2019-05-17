@@ -294,7 +294,7 @@ First add the Jargon SDK as a dependency of your function code (action_root/func
 Next, install Jargon's skill builder onto your Dialogflow or Actions SDK application
 ```javascript
 // Import the Jargon SDK
-const Jargon = require('@jargon/alexa-skill-sdk')
+const Jargon = require('@jargon/actions-on-google')
 
 // Installation -- Dialogflow
 const app = ...

@@ -1,3 +1,6 @@
+### 1.1.1
+Fixes an issue with circular module dependencies that Firebase's javascript compiler now rejects.
+
 ### 1.1.0
 Support alternative resource directories (via dependency on @jargon/sdk-core v1.3.0)
 
