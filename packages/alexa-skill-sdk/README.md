@@ -268,6 +268,12 @@ can directly access the resource manager if desired, for use cases such as:
 * batch rendering of multiple resources
 * determining which variation the ResourceManager chose
 
+You can access the resource manager through any of the following methods:
+* `handlerInput.jrm`
+* `handlerInput.jargonResourceManager`
+* `handlerInput.attributesManager.getRequestAttributes().jrm`
+* `handlerInput.attributesManager.getRequestAttributes().jargonResourceManager`
+
 ```typescript
 export interface ResourceManager {
   /** Renders a string in the current locale
@@ -354,9 +360,9 @@ content for (e.g., "en-US.json").
 ### Switch over to the Jargon response builder
 In your skill handlers access the Jargon response builder via one of the following methods:
 * `handlerInput.jrb`
-* `handlerInput.jargonResponseBuilder`
+* `handlerInput.jargonResourceManager`
 * `handlerInput.attributesManager.getRequestAttributes().jrb`
-* `handlerInput.attributesManager.getRequestAttributes().jargonResponseBuilder`
+* `handlerInput.attributesManager.getRequestAttributes().jargonResourceManager`
 
 Feel free to move to the Jargon response builder incrementally; however, you shouldn't mix the use of
 the ASK response builder and the Jargon response builder in a single request due to the last-write-wins
