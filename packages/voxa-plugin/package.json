@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "A Voxa plugin for the Jargon SDK",
   "keywords": [
-  "Jargon",
+    "Jargon",
     "Voxa"
   ],
   "homepage": "https://github.com/JargonInc/jargon-sdk-nodejs/tree/master/packages/voxa-plugin#readme",

@@ -250,11 +250,15 @@ function mergedString (ops: SROp[]): string {
 }
 
 function mergedPlayBehavior (ops: SROp[]): ui.PlayBehavior | undefined {
-  return chain(ops)
+  const val = chain(ops)
     .map(op => op.playBehavior)
     .compact()
     .first()
     .value()
+
+  // _.first() gets typed as returning a StringChain instead of a CollectionChain,
+  // so we need to assert the correct type here
+  return val as ui.PlayBehavior | undefined
 }
 
 type RBOp = (rb: ResponseBuilder) => Promise<ResponseBuilder>

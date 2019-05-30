@@ -43,7 +43,7 @@ export class JargonRenderer extends Renderer {
 
   public async render (view: string, voxaEvent: IVoxaEvent, variables?: any): Promise<string> {
     const item = this._makeRenderItem(view, voxaEvent, variables)
-    const message = await this._platformSpecificMessage(item, voxaEvent)
+    const message = await this._platformSpecificMessage<{}>(item, voxaEvent)
 
     if (isString(message)) {
       return message

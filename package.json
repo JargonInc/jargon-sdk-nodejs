@@ -19,7 +19,8 @@
 			"packages/*"
 		],
 		"nohoist": [
-			"**/ts-mocha"
+      "**/ts-mocha",
+      "**/tslint"
 		]
 	},
 	"name": "jargon-sdk-nodejs"
