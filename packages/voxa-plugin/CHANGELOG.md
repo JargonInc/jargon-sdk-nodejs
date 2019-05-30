@@ -1,3 +1,7 @@
+### 0.3.1
+
+Upgrade sdk-core to 1.3.1
+
 ### 0.3.0
 Support alternative resource directories (via dependency on @jargon/sdk-core v1.3.0)
 
