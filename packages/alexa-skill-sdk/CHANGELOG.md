@@ -1,3 +1,7 @@
+### 1.3.2
+
+Upgrade sdk-core to 1.3.1
+
 ### 1.3.1
 Readme updates describing how to access the ResourceManager
 
