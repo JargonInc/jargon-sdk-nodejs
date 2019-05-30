@@ -1,3 +1,7 @@
+### 1.3.1
+
+Upgrade i18next-sync-fs-backend to 1.1.1
+
 ### 1.3.0
 Support alternative resource directories
 
