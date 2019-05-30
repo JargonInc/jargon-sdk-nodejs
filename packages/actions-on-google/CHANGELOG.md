@@ -1,3 +1,7 @@
+### 1.1.2
+
+Upgrade sdk-core to 1.3.1
+
 ### 1.1.1
 Fixes an issue with circular module dependencies that Firebase's javascript compiler now rejects.
 
